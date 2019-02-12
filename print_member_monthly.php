@@ -7,8 +7,7 @@ $year = $_POST['year'];
 $total_sales = 0;
 
 
-$table2 = "SELECT member.amount,member.member_code,member.member_firstname,member.member_middlename,member.member_lastname,member_sales.member_sales_id,member_sales.date_log,member_sales.member_sales_id,member.member_sub_id,member.member_birthdate,member.member_address,member.member_gender,member.member_contact,member.member_sub_id,member.member_age,member.membership_registered,member.membership_expired,member.amount
- FROM member RIGHT JOIN member_sales ON member.member_id = member_sales.member_sales_id WHERE member.isDeleted = '0' AND member.isExpired= '0' AND member.isCancelled = '0' AND month = '$month' AND year = '$year'";
+$table2 = "SELECT * FROM member_sales_new WHERE month = '$month' AND year = '$year'";
         
         
         
@@ -86,12 +85,11 @@ $pdf->Cell(120 ,5   ,'DATE RANGE : '.$month.' OF YEAR '.$year);//end of line
 $pdf->SetFont('Arial','B',15);
 $pdf->Cell(25 ,10,'',0,1);
 $pdf->Cell(96 ,10,'Full Name ',1,0,'C');
-$pdf->Cell(98 ,10,'Contact Number',1,0,'C');
+$pdf->Cell(98 ,10,'Amount',1,0,'C');
 $pdf->SetFont('Arial','',12);
 $pdf->Cell(25 ,4,'',0,1);
 
-$table2 = "SELECT member.amount,member.member_code,member.member_firstname,member.member_middlename,member.member_lastname,member_sales.member_sales_id,member_sales.date_log,member_sales.member_sales_id,member.member_sub_id,member.member_birthdate,member.member_address,member.member_gender,member.member_contact,member.member_sub_id,member.member_age,member.membership_registered,member.membership_expired,member.amount
- FROM member RIGHT JOIN member_sales ON member.member_id = member_sales.member_sales_id WHERE member.isDeleted = '0' AND member.isExpired= '0' AND member.isCancelled = '0' AND month = '$month' AND year = '$year'";
+$table2 = "SELECT * FROM member_sales_new WHERE month = '$month' AND year = '$year'";
 
 
         
@@ -103,7 +101,7 @@ $table2 = "SELECT member.amount,member.member_code,member.member_firstname,membe
 
 $pdf->Cell(25 ,6,'',0,1);
 $pdf->Cell(96 ,6,$row['member_lastname'].', '.$row['member_firstname'].' '.$row['member_middlename'],1,0,'C');
-$pdf->Cell(98 ,6,$row['member_contact'],1,0,'C');
+$pdf->Cell(98 ,6,$row['amount'],1,0,'C');
 
 }
 

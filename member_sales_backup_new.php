@@ -221,14 +221,14 @@ $year = $_POST['year'];
 
                 <thead>
                 <tr>
-
+                   <th>Member Code</th>               
                   <th>Member's Full Name</th>
                   <th>Membership Package</th>
                   <th>Amount</th>
 
-                <th>Date Registered</th>
-                <th>Annual Expire</th>              
-                <th>Action</th>              
+                  <th>Date Registered</th>
+                      <th>Annual Expire</th>              
+                  <th>Action</th>
     
                 </tr>
                 </thead>
@@ -243,7 +243,8 @@ $final_total = 0;
 
 
 
-$table2 = "SELECT * FROM member_sales_new  WHERE week = '$week' AND year = '$year'";
+$table2 = "SELECT member.member_code,member.member_firstname,member.member_middlename,member.member_lastname,member_sales.member_sales_id,member_sales.date_log,member_sales.member_sales_id,member.member_sub_id,member.member_birthdate,member.member_address,member.member_gender,member.member_contact,member.member_sub_id,member.member_age,member.membership_registered,member.membership_expired,member.amount,member.annual_expire
+ FROM member RIGHT JOIN member_sales ON member.member_id = member_sales.member_sales_id WHERE week = '$week' AND year = '$year' ORDER BY member_lastname DESC";
         
         
         
@@ -260,14 +261,23 @@ $final_amount = $final_total;
 
 
                 <tr>
-               
+                  <td><?php echo $row['member_code']; ?> </td>
                   <td><?php echo $row['member_lastname'].', '.$row['member_firstname'].' '.$row['member_middlename'];?> </td>
                   <td>
 
           <?php
 
 
-    echo $row['member_package'];
+          if ($row['member_sub_id'] == '1') {
+          echo "1 Month Package for P1,000";
+          }elseif ($row['member_sub_id'] == '2') {
+           echo " 3 Month Package for P2,500";
+          }elseif ($row['member_sub_id'] == '3') {
+           echo " 6 Month Package for P4,500";
+          }else{
+          echo " 1 Year Package for P8,500";
+          }
+           
 
 
 
@@ -277,15 +287,15 @@ $final_amount = $final_total;
 
                   </td>
                   <td><?php echo $row['amount'];?></td>
-                  <td><?php echo $row['date_registered'];?></td>
-                  <td><?php echo $row['annual_expired'];?></td>
+                  <td><?php echo $row['date_log'];?></td>
+                  <td><?php echo $row['annual_expire'];?></td>
 <?php   
-$user_viewmodal="user_viewmodal".$row['member_sales_new_id'];
-$user_printmodal="user_printmodal".$row['member_sales_new_id'];
+$user_viewmodal="user_viewmodal".$row['member_sales_id'];
+$user_printmodal="user_printmodal".$row['member_sales_id'];
 
     echo '
 
-
+<td><button class="btn btn-primary"  data-toggle="modal" data-target="#'.$user_viewmodal.'"><i class="fa fa-eye"></i></button>&nbsp;</td>
    ';
   
 echo
@@ -365,37 +375,7 @@ echo
     </div>
                 </div>
                 <div class='modal-footer'>
-
-
-
-
-
-
-
-
-
-
-
-
-                <input type='hidden' name='get_day' value='".$row['day']."'>
-                  <input type='hidden' name='get_month' value='".$row['month']."'>                   
-                 <input type='hidden' name='get_year' value='".$row['year']."'>     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                <input type='hidden' name='get_userid' value='".$row['member_sales_new_id']."'>
+                <input type='hidden' name='get_userid' value='".$row['member_code']."'>
                     <button type='submit' name='member_cancel'  class='btn btn-success'>Yes</button>
                     <button type='button' class='btn btn-danger' data-dismiss='modal'>No</button>
   </form>
@@ -451,7 +431,8 @@ $year = date("Y");
 <h4>ANNUAL SALES OF THIS YEAR <?php echo $year; ?> : 
 <?php 
 $total_annual_initial = 0;
-$table2 = "SELECT * FROM member_sales_new WHERE year = '$year'";
+$table2 = "SELECT member.member_code,member.member_firstname,member.member_middlename,member.member_lastname,member_sales.member_sales_id,member_sales.date_log,member_sales.member_sales_id,member.member_sub_id,member.member_birthdate,member.member_address,member.member_gender,member.member_contact,member.member_height,member.member_weight,member.member_targetweight,member.member_medicalhistory,member.member_sub_id,member.member_age,member.membership_registered,member.membership_expired,member.amount,member.annual_expire
+ FROM member RIGHT JOIN member_sales ON member.member_id = member_sales.member_sales_id WHERE  member.year = '$year'";
         
         
         
@@ -488,7 +469,7 @@ $year = $_POST['year'];
                   <th>Amount</th>               
                   <th>Date Registered</th>
                   <th>Annual Expired</th>
-                                 <th>Action</th>     
+                  <th>Action</th>
     
                 </tr>
                 </thead>
@@ -503,7 +484,8 @@ $final_total = 0;
 
 
 
-$table2 = "SELECT * FROM member_sales_new WHERE month = '$month' AND year = '$year'";
+$table2 = "SELECT member.member_code,member.member_firstname,member.member_middlename,member.member_lastname,member_sales.member_sales_id,member_sales.date_log,member_sales.member_sales_id,member.member_sub_id,member.member_birthdate,member.member_address,member.member_gender,member.member_contact,member.member_height,member.member_weight,member.member_targetweight,member.member_medicalhistory,member.member_sub_id,member.member_age,member.membership_registered,member.membership_expired,member.amount,member.annual_expire
+ FROM member RIGHT JOIN member_sales ON member.member_id = member_sales.member_sales_id WHERE mmonth = '$month' AND year = '$year' ORDER BY member_lastname DESC";
         
         
         
@@ -526,7 +508,17 @@ $final_amount = $final_total;
 
           <?php
 
-echo $row['member_package'];
+
+          if ($row['member_sub_id'] == '1') {
+          echo "1 Month Package for P1,000";
+          }elseif ($row['member_sub_id'] == '2') {
+           echo " 3 Month Package for P2,500";
+          }elseif ($row['member_sub_id'] == '3') {
+           echo " 6 Month Package for P4,500";
+          }else{
+          echo " 1 Year Package for P8,500";
+          }
+           
 
 
 
@@ -537,16 +529,16 @@ echo $row['member_package'];
                   </td>
                   <td><?php echo $row['amount'];?></td>
 
-                  <td><?php echo $row['date_registered'];?></td>
-                  <td><?php echo $row['annual_expired'];?></td>
+                  <td><?php echo $row['date_log'];?></td>
+                  <td><?php echo $row['annual_expire'];?></td>
 
 <?php   
-$user_viewmodal="user_viewmodal".$row['member_sales_new_id'];
-$user_printmodal="user_printmodal".$row['member_sales_new_id'];
+$user_viewmodal="user_viewmodal".$row['member_sales_id'];
+$user_printmodal="user_printmodal".$row['member_sales_id'];
 
     echo '
 
-
+<td><button class="btn btn-primary"  data-toggle="modal" data-target="#'.$user_viewmodal.'"><i class="fa fa-eye"></i></button>&nbsp;</td>
    ';
   
 echo
@@ -623,37 +615,7 @@ echo
     </div>
                 </div>
                 <div class='modal-footer'>
-
-
-
-
-
-
-
-
-
-
-
-
-                <input type='hidden' name='get_day' value='".$row['day']."'>
-                  <input type='hidden' name='get_month' value='".$row['month']."'>                   
-                 <input type='hidden' name='get_year' value='".$row['year']."'>     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                <input type='hidden' name='get_userid' value='".$row['member_sales_new_id']."'>
+                <input type='hidden' name='get_userid' value='".$row['member_code']."'>
                     <button type='submit' name='member_cancel'  class='btn btn-success'>Yes</button>
                     <button type='button' class='btn btn-danger' data-dismiss='modal'>No</button>
   </form>
@@ -708,7 +670,8 @@ $year = date("Y");
 <h4>ANNUAL SALES OF THIS YEAR <?php echo $year; ?> : 
 <?php 
 $total_annual_initial = 0;
-$table2 = "SELECT * FROM member_sales_new WHERE year = '$year'";
+$table2 = "SELECT member.member_code,member.member_firstname,member.member_middlename,member.member_lastname,member_sales.member_sales_id,member_sales.date_log,member_sales.member_sales_id,member.member_sub_id,member.member_birthdate,member.member_address,member.member_gender,member.member_contact,member.member_height,member.member_weight,member.member_targetweight,member.member_medicalhistory,member.member_sub_id,member.member_age,member.membership_registered,member.membership_expired,member.amount,member.annual_expire
+ FROM member RIGHT JOIN member_sales ON member.member_id = member_sales.member_sales_id WHERE  member.year = '$year'";
         
         
         
@@ -736,14 +699,14 @@ $year = $_POST['year'];
 <table class="table table-striped table-bordered" id = "example">
                 <thead>
                 <tr>
-                     
+                   <th>Member Code</th>               
                   <th>Member's Full Name</th>
                   <th>Membership Package</th>
                    <th>Amount</th>                 
                   <th>Date Registered</th>
                   <th>Annual Expire</th>
-                 
-                    <th>Action</th>     
+                  <th>Action</th>
+    
                 </tr>
                 </thead>
                 <tbody>
@@ -756,7 +719,8 @@ $username_check = $_SESSION["username"];
 
 $final_total = 0;
 
-$table2 = "SELECT * FROM member_sales_new WHERE year = '$year'";
+$table2 = "SELECT member.member_code,member.member_firstname,member.member_middlename,member.member_lastname,member_sales.member_sales_id,member_sales.date_log,member_sales.member_sales_id,member.member_sub_id,member.member_birthdate,member.member_address,member.member_gender,member.member_contact,member.member_sub_id,member.member_age,member.membership_registered,member.membership_expired,member.amount,member.annual_expire
+ FROM member RIGHT JOIN member_sales ON member.member_id = member_sales.member_sales_id WHERE myear = '$year' ORDER BY member_lastname DESC";
         
         
         
@@ -774,13 +738,23 @@ $final_amount = $final_total;
 
 
                 <tr>
- 
+                  <td><?php echo $row['member_code']; ?> </td>
                   <td><?php echo $row['member_lastname'].', '.$row['member_firstname'].' '.$row['member_middlename'];?> </td>
                   <td>
 
           <?php
 
-echo $row['member_package'];    
+
+          if ($row['member_sub_id'] == '1') {
+          echo "1 Month Package for P1,000";
+          }elseif ($row['member_sub_id'] == '2') {
+           echo " 3 Month Package for P2,500";
+          }elseif ($row['member_sub_id'] == '3') {
+           echo " 6 Month Package for P4,500";
+          }else{
+          echo " 1 Year Package for P8,500";
+          }
+           
 
 
 
@@ -791,15 +765,15 @@ echo $row['member_package'];
                   </td>
                   <td><?php echo $row['amount'];?></td>
 
-                  <td><?php echo $row['date_registered'];?></td>
-                  <td><?php echo $row['annual_expired'];?></td>
+                  <td><?php echo $row['date_log'];?></td>
+                  <td><?php echo $row['annual_expire'];?></td>
 <?php   
-$user_viewmodal="user_viewmodal".$row['member_sales_new_id'];
-$user_printmodal="user_printmodal".$row['member_sales_new_id'];
+$user_viewmodal="user_viewmodal".$row['member_sales_id'];
+$user_printmodal="user_printmodal".$row['member_sales_id'];
 
     echo '
 
-
+<td><button class="btn btn-primary"  data-toggle="modal" data-target="#'.$user_viewmodal.'"><i class="fa fa-eye"></i></button>&nbsp;</td>
    ';
   
 echo
@@ -879,37 +853,7 @@ echo
     </div>
                 </div>
                 <div class='modal-footer'>
-
-
-
-
-
-
-
-
-
-
-
-
-                <input type='hidden' name='get_day' value='".$row['day']."'>
-                  <input type='hidden' name='get_month' value='".$row['month']."'>                   
-                 <input type='hidden' name='get_year' value='".$row['year']."'>     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                <input type='hidden' name='get_userid' value='".$row['member_sales_new_id']."'>
+                <input type='hidden' name='get_userid' value='".$row['member_code']."'>
                     <button type='submit' name='member_cancel'  class='btn btn-success'>Yes</button>
                     <button type='button' class='btn btn-danger' data-dismiss='modal'>No</button>
   </form>
@@ -964,7 +908,8 @@ $year = date("Y");
 <h4>ANNUAL SALES OF THIS YEAR <?php echo $year; ?> : 
 <?php 
 $total_annual_initial = 0;
-$table2 = "SELECT * FROM member_sales_new WHERE year = '$year'";
+$table2 = "SELECT member.member_code,member.member_firstname,member.member_middlename,member.member_lastname,member_sales.member_sales_id,member_sales.date_log,member_sales.member_sales_id,member.member_sub_id,member.member_birthdate,member.member_address,member.member_gender,member.member_contact,member.member_height,member.member_weight,member.member_targetweight,member.member_medicalhistory,member.member_sub_id,member.member_age,member.membership_registered,member.membership_expired,member.amount,member.annual_expire
+ FROM member RIGHT JOIN member_sales ON member.member_id = member_sales.member_sales_id WHERE  member.year = '$year'";
         
         
         
@@ -1006,7 +951,7 @@ else{
                   <th>Amount</th>
                   <th>Date Registered</th>
                   <th>Annual Expired</th>
-                       <th>Action</th>     
+                  <th>Action</th>
     
                 </tr>
                 </thead>
@@ -1021,7 +966,8 @@ $final_total = 0;
 
 
 
-$table2 = "SELECT * FROM member_sales_new";
+$table2 = "SELECT member.member_code,member.member_firstname,member.member_middlename,member.member_lastname,member_sales.member_sales_id,member_sales.date_log,member_sales.member_sales_id,member.member_sub_id,member.member_birthdate,member.member_address,member.member_gender,member.member_contact,member.member_height,member.member_weight,member.member_targetweight,member.member_medicalhistory,member.member_sub_id,member.member_age,member.membership_registered,member.membership_expired,member.amount,member.annual_expire
+ FROM member RIGHT JOIN member_sales ON member.member_id = member_sales.member_sales_id WHERE member.isDeleted = '0' AND member.isCancelled = '0' ORDER BY member_lastname DESC";
         
         
         
@@ -1044,22 +990,39 @@ $final_amount = $final_total;
                 <tr>
                   <td><?php echo $row['member_lastname'].', '.$row['member_firstname'].' '.$row['member_middlename'];?> </td>
                   <td>
-                    <?php 
-                      echo $row['member_package'];
-                      ?>
+
+          <?php
+
+
+          if ($row['member_sub_id'] == '1') {
+          echo "1 Month Package for P1,000";
+          }elseif ($row['member_sub_id'] == '2') {
+           echo " 3 Month Package for P2,500";
+          }elseif ($row['member_sub_id'] == '3') {
+           echo " 6 Month Package for P4,500";
+          }else{
+          echo " 1 Year Package for P8,500";
+          }
+           
+
+
+
+           ?>
+                    
+
+
                   </td>
                   <td><?php echo $row['amount'];?></td>
-                  <td><?php echo $row['date_registered'];?></td>
-                  <td><?php echo $row['annual_expired'];?></td>
+                  <td><?php echo $row['date_log'];?></td>
+                  <td><?php echo $row['annual_expire'];?></td>
 
 <?php   
-$user_viewmodal="user_viewmodal".$row['member_sales_new_id'];
-$user_printmodal="user_printmodal".$row['member_sales_new_id'];
+$user_viewmodal="user_viewmodal".$row['member_sales_id'];
+$user_printmodal="user_printmodal".$row['member_sales_id'];
 
     echo '
 
-<td><button class="btn btn-primary"  data-toggle="modal" data-target="#'.$user_printmodal.'"><i class="fa fa-print"></i></button>&nbsp;</td>
-
+<td><button class="btn btn-primary"  data-toggle="modal" data-target="#'.$user_viewmodal.'"><i class="fa fa-eye"></i></button>&nbsp;</td>
    ';
   
 echo
@@ -1129,47 +1092,15 @@ echo
                 </div>
                 <div class='modal-body'>
                  
- <form  role='form' action='member_print.php' method='post' >
+ <form  role='form' action='save_data.php' method='post' >
     <div class='form-group'>
 <center><h3>Would you like to print an invoice ? </</center>
       
     </div>
                 </div>
                 <div class='modal-footer'>
-
-          
-
-
-
-
-
-
-
-
-
-
-
-
-                <input type='hidden' name='get_day' value='".$row['day']."'>
-                  <input type='hidden' name='get_month' value='".$row['month']."'>                   
-                 <input type='hidden' name='get_year' value='".$row['year']."'>     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                <input type='hidden' name='get_userid' value='".$row['member_sales_new_id']."'>
-                    <button type='submit' name='member_print_invoice'  class='btn btn-success'>Yes</button>
+                <input type='hidden' name='get_userid' value='".$row['member_code']."'>
+                    <button type='submit' name='member_cancel'  class='btn btn-success'>Yes</button>
                     <button type='button' class='btn btn-danger' data-dismiss='modal'>No</button>
   </form>
                 </div>
@@ -1220,7 +1151,8 @@ $year = date("Y");
 <h4>ANNUAL SALES OF THIS YEAR <?php echo $year; ?> : 
 <?php 
 $total_annual_initial = 0;
-$table2 = "SELECT * FROM member_sales_new";
+$table2 = "SELECT member.member_code,member.member_firstname,member.member_middlename,member.member_lastname,member_sales.member_sales_id,member_sales.date_log,member_sales.member_sales_id,member.member_sub_id,member.member_birthdate,member.member_address,member.member_gender,member.member_contact,member.member_height,member.member_weight,member.member_targetweight,member.member_medicalhistory,member.member_sub_id,member.member_age,member.membership_registered,member.membership_expired,member.amount,member.annual_expire
+ FROM member RIGHT JOIN member_sales ON member.member_id = member_sales.member_sales_id WHERE  member.year = '$year'";
         
         
         

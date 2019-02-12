@@ -86,6 +86,10 @@ include("navbar.php");
               <div class="box-body">
 <br><br>
             <form method="POST" action="save_data.php">
+              <div class="form-group">
+                  <label for="exampleInputLastName">Last Name</label>
+                  <input type="text" class="form-control" id="exampleInputLastName" placeholder="Enter Last Name" name="lastname" required>
+                </div>
                 <div class="form-group">
                   <label for="exampleInputFirstName">First Name</label>
                   <input type="text" class="form-control" id="exampleInputFirstName" placeholder="Enter First Name" name="firstname" required>
@@ -94,10 +98,7 @@ include("navbar.php");
                   <label for="middlename">Middle Name</label>
                   <input type="text" class="form-control" id="middlename" placeholder="Enter Middle Name" name="middlename" >
                 </div>                
-                <div class="form-group">
-                  <label for="exampleInputLastName">Last Name</label>
-                  <input type="text" class="form-control" id="exampleInputLastName" placeholder="Enter Last Name" name="lastname" required>
-                </div>
+                
                 <div class="form-group">
                   <label for="exampleInputUsername">Username</label>
                   <input type="text" class="form-control" id="exampleInputUsername" placeholder="Enter Username" name="username" required>

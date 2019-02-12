@@ -294,9 +294,40 @@ $month = date('F');
 $year = date('Y');
 
 $timestamp = date("Y-m-d H:i:s");
+$name=' '.$firstname.' '.$middlename.' '.$lastname.' ';
 
 			$insert_user = "INSERT INTO member (`member_code`,`member_firstname`,`member_middlename`,`member_lastname`,`member_birthdate`,`member_address`,`member_gender`,`member_contact`,`member_height`,`member_weight`,`member_targetweight`,`member_medicalhistory`,`member_sub_id`,`member_age`,`membership_registered`,`membership_expired`,`annual_expire`,`day`,`week`,`month`,`year`,`isPaid`,`isDeleted`,`isExpired`,`amount`,`timestamp_date`) VALUES ('".$membership_code."','".$firstname."','".$middlename."','".$lastname."','".$birthday."','".$address."','".$gender."','".$contact."','".$height."','".$weight."','".$targetweight."','".$medicalhistory."','".$membership."','".$age."','".$today."','".$memberDays."','".$annual_expire."','".$day."','".$week."','".$month."','".$year."','1','0','0','$amount','".$timestamp."') ";
 			$run_insert_user = mysqli_query($connect,$insert_user);
+
+
+$mem=$membership;
+if($mem == '1'){
+
+   $mem="1 Month Package for P1,000";
+}elseif ($mem == '2') {
+
+   $mem="3 Months Package for P2,500";
+
+
+}elseif ($mem == '3') {
+
+   $mem= "6 Months Package for P4,500";
+}
+else{
+   $mem="1 Year Package for P8,500";
+
+}
+
+
+$insert_sales = "INSERT INTO sales (`mem_full`,`mem_package`,`mem_amount`,`mem_date`,`mem_expired`) VALUES ('".$name."','".$mem."','".$amount."','".$today."','".$annual_expire."') ";
+			$run_insert_sales = mysqli_query($connect,$insert_sales);
+
+
+
+$insert_sales_new = "INSERT INTO member_sales_new (`member_firstname`,`member_middlename`,`member_lastname`,`amount`,`date_registered`,`annual_expired`,`day`,`week`,`month`,`year`,`member_package`) VALUES ('".$firstname."','".$middlename."','".$lastname."','".$amount."','".$today."','".$annual_expire."','".$day."','".$week."','".$month."','".$year."','".$mem."') ";
+			$run_insert_sales_new = mysqli_query($connect,$insert_sales_new);
+
+
 
 
 
@@ -323,15 +354,18 @@ $timestamp = date("Y-m-d H:i:s");
         	$member_id = $row['member_id'];
 
         }
-
 	$insert_membersales = "INSERT INTO member_sales (`member_sales_id`,`date_log`) VALUES ('".$member_id."','".$date_ph."') ";
 	$run_insert_membersales = mysqli_query($connect,$insert_membersales);
 
 
+
+
+
+
 			echo '<script language="javascript">';
-			echo 'alert("USER SUCCESSFULLY SAVED")';
-			echo '</script>';
-			echo"<script>window.location.href='transactions_add_member.php';</script>";	
+		echo 'alert("USER SUCCESSFULLY SAVED")';
+		echo '</script>';
+		echo"<script>window.location.href='transactions_add_member.php';</script>";	
 
 
 
@@ -624,6 +658,26 @@ $memberDays = date ("Y-m-d", strtotime ($today ."+1 year"));
 
 
 }
+$mem=$membership;
+if($mem == '1'){
+
+   $mem_package="1 Month Package for P1,000";
+}elseif ($mem == '2') {
+
+   $mem_package="3 Months Package for P2,500";
+
+
+}elseif ($mem == '3') {
+
+   $mem_package= "6 Months Package for P4,500";
+}
+else{
+   $mem_package="1 Year Package for P8,500";
+
+}
+
+
+
 
 
 $annual_expire = date ("Y-m-d", strtotime ($today ."+1 year"));
@@ -638,6 +692,19 @@ $timestamp = date("Y-m-d H:i:s");
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
         
         $table2 = "SELECT * FROM member WHERE member_id ='$get_userid'";
         $run_query2b = mysqli_query($connect,$table2);
@@ -646,8 +713,34 @@ $timestamp = date("Y-m-d H:i:s");
 
         {
         	$member_code = $row['member_code'];
+        	$member_firstname = $row['member_firstname'];
+        	$member_middlename = $row['member_middlename'];
+        	$member_lastname = $row['member_lastname'];
+
 
         }
+
+
+
+
+
+$day = date('d');
+$week = date('W');
+$month = date('F');
+$year = date('Y');
+
+
+
+$insert_sales_new = "INSERT INTO member_sales_new (`member_firstname`,`member_middlename`,`member_lastname`,`amount`,`date_registered`,`annual_expired`,`day`,`week`,`month`,`year`,`member_package`) VALUES ('".$member_firstname."','".$member_middlename."','".$member_lastname."','".$price."','".$today."','".$annual_expire."','".$day."','".$week."','".$month."','".$year."','".$mem_package."') ";
+			$run_insert_sales_new = mysqli_query($connect,$insert_sales_new);
+
+
+
+
+
+
+
+
 
 
     $username = $_SESSION['logs_username'];
@@ -699,7 +792,7 @@ if($middlename=""){
 $timestamp = date("Y-m-d H:i:s");
 
 
-	$insert_customer = "INSERT INTO customer_daily (`cust_firstname`,`cust_middlename`,`cust_lastname`,`cust_time_in`,`cust_contact_no`,`timestamp_date`) VALUES ('".$firstname."','".$middlename."','".$lastname."','".$date_ph."','".$contact."','".$timestamp."')";
+	$insert_customer = "INSERT INTO customer_daily (`cust_firstname`,`cust_middlename`,`cust_lastname`,`cust_time_in`,`cust_contact_no`) VALUES ('".$firstname."','".$middlename."','".$lastname."','".$date_ph."','".$contact."')";
 	$run_insert_customer = mysqli_query($connect,$insert_customer);
 
 

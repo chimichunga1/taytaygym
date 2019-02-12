@@ -142,7 +142,7 @@ include("navbar.php");
 
 <?php 
 $username_check = $_SESSION["username"];
-$table2 = "SELECT * FROM customer_daily WHERE isDeleted = '0' AND isTimeOut = '0' ORDER BY timestamp_date DESC";
+$table2 = "SELECT * FROM customer_daily WHERE isDeleted = '0' AND isTimeOut = '0'";
         
         
         
