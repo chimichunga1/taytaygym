@@ -1,3 +1,13 @@
+ 
+<?php 
+   
+    session_start();
+   $_SESSION['check_login'] = "";
+
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -151,15 +161,7 @@
   </style>
   <body>
   
- 
-<?php 
-   
-    session_start();
-   $_SESSION['check_login'] = "";
 
-
-
-?>
 <div class="login-form">
   <h1>POUND FOR POUND FITNESS TAYTAY</h1>
 
