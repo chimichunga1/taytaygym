@@ -223,7 +223,7 @@ $username_check = $_SESSION["username"];
 $final_total = 0;
 
 
-$table2 = "SELECT customer_daily.amount,customer_daily.cust_daily_id,customer_daily.cust_firstname,customer_daily.cust_middlename,customer_daily.cust_lastname,customer_daily.cust_contact_no,customer_daily.cust_time_in,customer_sales.time_out FROM customer_daily LEFT JOIN customer_sales ON customer_daily.cust_daily_id=customer_sales.cust_sales_id WHERE customer_daily.isDeleted='0' AND customer_daily.isTimeOut = '1' AND customer_sales.week = '$week' AND customer_sales.year = '$year'";
+$table2 = "SELECT customer_sales.day,customer_sales.week,customer_sales.month,customer_sales.year,customer_daily.amount,customer_daily.cust_daily_id,customer_daily.cust_firstname,customer_daily.cust_middlename,customer_daily.cust_lastname,customer_daily.cust_contact_no,customer_daily.cust_time_in,customer_sales.time_out FROM customer_daily LEFT JOIN customer_sales ON customer_daily.cust_daily_id=customer_sales.cust_sales_id WHERE customer_daily.isDeleted='0' AND customer_daily.isTimeOut = '1' AND customer_sales.week = '$week' AND customer_sales.year = '$year'";
         
         
         
@@ -296,7 +296,7 @@ echo
                 </div>
                 <div class='modal-body'>
                  
- <form  role='form' action='save_data.php' method='post' >
+ <form  role='form' action='print_daily_weekly.php' method='post' >
     <div class='form-group'>
 <center><h3>Would you like to print an invoice ? </h3></center>
       
@@ -331,8 +331,8 @@ echo
   <form action="print_daily_weekly.php" method="POST">
 
 <?php 
-echo "<input type='hidden' name='week' value='".$week."'>";
-echo "<input type='hidden' name='year' value='".$year."'>";
+echo "<input type='hidden' name='get_week' value='".$week."'>";
+echo "<input type='hidden' name='get_year' value='".$year."'>";
 
 ?>
 
@@ -397,7 +397,7 @@ $username_check = $_SESSION["username"];
 $final_total = 0;
 
 
-$table2 = "SELECT customer_daily.amount,customer_daily.cust_daily_id,customer_daily.cust_firstname,customer_daily.cust_middlename,customer_daily.cust_lastname,customer_daily.cust_contact_no,customer_daily.cust_time_in,customer_sales.time_out FROM customer_daily LEFT JOIN customer_sales ON customer_daily.cust_daily_id=customer_sales.cust_sales_id WHERE customer_daily.isDeleted='0' AND customer_daily.isTimeOut = '1' AND month = '$month' AND year = '$year'";
+$table2 = "SELECT customer_sales.day,customer_sales.week,customer_sales.month,customer_sales.year,customer_daily.amount,customer_daily.cust_daily_id,customer_daily.cust_firstname,customer_daily.cust_middlename,customer_daily.cust_lastname,customer_daily.cust_contact_no,customer_daily.cust_time_in,customer_sales.time_out FROM customer_daily LEFT JOIN customer_sales ON customer_daily.cust_daily_id=customer_sales.cust_sales_id WHERE customer_daily.isDeleted='0' AND customer_daily.isTimeOut = '1' AND month = '$month' AND year = '$year'";
         
         
         
@@ -468,14 +468,14 @@ echo
                 </div>
                 <div class='modal-body'>
                  
- <form  role='form' action='save_data.php' method='post' >
+ <form  role='form' action='print_daily_monthly.php' method='post' >
     <div class='form-group'>
 <center><h3>Would you like to print an invoice ? </h3></center>
       
     </div>
                 </div>
                 <div class='modal-footer'>
-                <input type='hidden' name='get_day' value='".$row['day']."'>
+          
                 <input type='hidden' name='get_month' value='".$row['month']."'>
                 <input type='hidden' name='get_year' value='".$row['year']."'>                
                 <input type='hidden' name='get_userid' value='".$row['cust_daily_id']."'>
@@ -504,8 +504,8 @@ echo
   <form action="print_daily_monthly.php" method="POST">
 
 <?php 
-echo "<input type='hidden' name='month' value='".$month."'>";
-echo "<input type='hidden' name='year' value='".$year."'>";
+echo "<input type='hidden' name='get_month' value='".$month."'>";
+echo "<input type='hidden' name='get_year' value='".$year."'>";
 
 ?>
 
@@ -561,7 +561,7 @@ $username_check = $_SESSION["username"];
 $final_total = 0;
 
 
-$table2 = "SELECT customer_daily.amount,customer_daily.cust_daily_id,customer_daily.cust_firstname,customer_daily.cust_middlename,customer_daily.cust_lastname,customer_daily.cust_contact_no,customer_daily.cust_time_in,customer_sales.time_out FROM customer_daily LEFT JOIN customer_sales ON customer_daily.cust_daily_id=customer_sales.cust_sales_id WHERE customer_daily.isDeleted='0' AND customer_daily.isTimeOut = '1' AND year = '$year'";
+$table2 = "SELECT customer_sales.day,customer_sales.week,customer_sales.month,customer_sales.year,customer_daily.amount,customer_daily.cust_daily_id,customer_daily.cust_firstname,customer_daily.cust_middlename,customer_daily.cust_lastname,customer_daily.cust_contact_no,customer_daily.cust_time_in,customer_sales.time_out FROM customer_daily LEFT JOIN customer_sales ON customer_daily.cust_daily_id=customer_sales.cust_sales_id WHERE customer_daily.isDeleted='0' AND customer_daily.isTimeOut = '1' AND year = '$year'";
         
         
         
@@ -634,7 +634,7 @@ echo
                 </div>
                 <div class='modal-body'>
                  
- <form  role='form' action='save_data.php' method='post' >
+ <form  role='form' action='print_daily_yearly.php' method='post' >
     <div class='form-group'>
 <center><h3>Would you like to print an invoice ? </h3></center>
       
@@ -643,8 +643,8 @@ echo
                 <div class='modal-footer'>
 
 
-                <input type='hidden' name='get_day' value='".$row['day']."'>
-                <input type='hidden' name='get_month' value='".$row['month']."'>
+
+    
                 <input type='hidden' name='get_year' value='".$row['year']."'>
                 <input type='hidden' name='get_userid' value='".$row['cust_daily_id']."'>
                     <button type='submit' name='member_cancel'  class='btn btn-success'>Yes</button>
@@ -673,7 +673,7 @@ echo
 
 <?php 
 
-echo "<input type='hidden' name='year' value='".$year."'>";
+echo "<input type='hidden' name='get_year' value='".$year."'>";
 
 ?>
 

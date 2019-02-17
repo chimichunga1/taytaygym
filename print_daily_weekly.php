@@ -2,8 +2,8 @@
 //call the FPDF library
 include("connection.php");
 require('fpdf/fpdf.php');
-$week = $_SESSION['week1'];
-$year = $_POST['year'];
+$week = $_POST['get_week'];
+$year = $_POST['get_year'];
 $total_sales = 0;
  
 $day = date('d');

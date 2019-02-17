@@ -83,25 +83,15 @@
 <div class="login-form">
 
     <form action="save_data.php" method="post">
-        <h2 class="text-center">Log in</h2>  
-            <center>
-   <b style="color: red;">
-  <?php 
+        <h2 class="text-center">Enter your new password</h2>  
+   
 
-          if(isset($_SESSION['attempt_counter'])){
-            echo "You have ".$_SESSION['attempt_counter']." tries left !";
-          }
-    ?> 
-     </b>
-     </center>    
-        <div class="form-group">
-            <input type="text" class="form-control" placeholder="Username" name="username" required="required">
-        </div>
         <div class="form-group">
             <input type="password" class="form-control" name="password" placeholder="Password" required="required">
         </div>
         <div class="form-group">
-            <button type="submit" name="login"  class="btn btn-primary btn-block">Log in</button>
+          <input type="hidden" name="get_acc_id" value="<?php echo $_SESSION['update_id'];?>">
+            <button type="submit" name="update_pass"  class="btn btn-primary btn-block">Proceed</button>
         </div>
 <!--         <div class="clearfix">
             <label class="pull-left checkbox-inline"><input type="checkbox"> Remember me</label>

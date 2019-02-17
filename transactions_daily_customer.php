@@ -82,24 +82,77 @@ include("navbar.php");
             <form action="save_data.php" method="POST">
 
 
-                <div class="form-group">
-                  <label for="exampleInputLastName">Last Name</label>
-                  <input type="text" class="form-control" id="exampleInputLastName" placeholder="Enter Last Name" name="lastname" required>
-                </div>
-                <div class="form-group">
-                  <label for="exampleInputFirstName">First Name</label>
-                  <input type="text" class="form-control" id="exampleInputFirstName" placeholder="Enter First Name" name="firstname" required>
-                </div>
-                 <div class="form-group">
-                  <label for="middleName">Middle Name</label>
-                  <input type="text" class="form-control" id="middleName" placeholder="Enter Middle Name" name="middlename">
-                </div>
-                <div class="form-group">
-                  <label for="conact">Contact Number: </label>
-                  <input type="number" class="form-control" id="conact" placeholder="Enter Last Name" name="contact" required>
-                </div>
 
 
+<div class="row">
+
+    <div class="col-md-3">
+      <div class="form-group">
+        <label for="exampleInputLastName">Last Name</label>
+        <input type="text" class="form-control" id="exampleInputLastName" placeholder="Enter Last Name" name="lastname" required>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="form-group">
+        <label for="exampleInputFirstName">First Name</label>
+        <input type="text" class="form-control" id="exampleInputFirstName" placeholder="Enter First Name" name="firstname" required>
+      </div>
+    </div>
+    <div class="col-md-3">
+     <div class="form-group">
+      <label for="middleName">Middle Name</label>
+      <input type="text" class="form-control" id="middleName" placeholder="Enter Middle Name" name="middlename">
+    </div>
+    </div>
+    <div class="col-md-3">
+      <div class="form-group">
+        <label for="conact">Contact Number: </label>
+        <input type="number" class="form-control"  maxlength="11" max="99999999999" id="conact" placeholder="Enter Last Name" name="contact" required>
+      </div>
+    </div>
+
+</div>
+
+<div class="row">
+
+      <div class="col-md-3">
+            <div class="form-group">
+              <label for="address">Address</label>
+              <input type="text" class="form-control" id="address" placeholder="Enter your Address" name="address" required>
+            </div>
+      </div>
+      <div class="col-md-3">
+            <div class="form-group">
+              <label for="birthday">Birthday</label>
+              <input type="date" class="form-control" id="birthday" placeholder="Enter Birthday" name="birthday" max="2013-12-31" required>
+            </div>
+      </div>
+      <div class="col-md-3">
+            <div class="form-group">
+              <label for="height">Height</label>
+              <input type="number" class="form-control" id="height" placeholder="Enter Height" name="height" min="1" max="300" required>
+            </div>
+      </div>
+      <div class="col-md-3">
+            <div class="form-group">
+            <label for="weight">Weight</label>
+            <input type="number" class="form-control" id="weight" placeholder="Enter Weight" name="weight" min="1" max="500" required>
+          </div>
+      </div>
+
+</div>
+
+
+<div class="row">
+
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="medicalhistory">Medical History</label>
+      <input type="text" class="form-control" id="medicalhistory" placeholder="Medical History" name="medicalhistory" required>
+    </div>
+  </div>
+
+</div>
 
 
               </div>
@@ -175,6 +228,7 @@ $view_modal="user_delmodal".$row['cust_daily_id'];
     echo '
 
 <td>
+<button class="btn btn-primary"  data-toggle="modal" data-target="#'.$view_modal.'"><i class="fa fa-eye"></i></button>&nbsp;
 <button class="btn btn-success"  data-toggle="modal" data-target="#'.$payout_modal.'"><i class="fa fa-check"></i></button>&nbsp;
 
 
@@ -225,7 +279,7 @@ echo
             <div class='modal-content'>
                 <div class='modal-header'>
                     <button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>
-                    <h4 class='modal-title'> </h4>
+                    <h4 class='modal-title'><b> CUSTOMER INFORMATION</b></h4>
                 </div>
                 <div class='modal-body'>
                  
@@ -235,11 +289,43 @@ echo
 ?>
 
 
+<div class="row">
+
+  <div class="col-md-4">
+  <b>Address : <?php echo $row['cust_address']; ?></b> <p></p>
+
+  </div>
+  <div class="col-md-4">
+  <b>Birthday : <?php echo $row['cust_birthday']; ?></b> <p></p>
+
+  </div>
+
+  <div class="col-md-4">
+  <b>Age : <?php echo $row['cust_age']; ?></b> <p></p>
+
+  </div>
+
+
+
+</div>
+
+<div class="row">
+
+
+  <div class="col-md-4">
+  <b>Weight : <?php echo $row['cust_weight']; ?></b> <p></p>
+
+  </div>
+  <div class="col-md-3">
+  <b>Height : <?php echo $row['cust_height']; ?></b> <p></p>
+
+  </div>
 
 
 
 
 
+</div>
 
 <?php
 echo"

@@ -83,63 +83,88 @@ include("navbar.php");
 <br><br>
             <form method="POST" action="save_data.php">
 
-
-              <?php $random_num = mt_rand(00000001, 99999999); ?>
-                <div class="form-group">
+<div class="row">
                   <label for="membershipCode"></label>
-                  <input type="hidden" class="form-control" id="membershipCode" value="<?php echo $random_num; ?>" name="membership_code" readonly>
-                </div>
-                 <div class="form-group">
-                  <label for="exampleInputLastName">Last Name</label>
-                  <input type="text" class="form-control" id="exampleInputLastName" placeholder="Enter Last Name" name="lastname" required>
-                </div>
-                <div class="form-group">
-                  <label for="exampleInputFirstName">First Name</label>
-                  <input type="text" class="form-control" id="exampleInputFirstName" placeholder="Enter First Name" name="firstname" required>
-                </div>
-                 <div class="form-group">
-                  <label for="middleName">Middle Name</label>
-                  <input type="text" class="form-control" id="middleName" placeholder="Enter Middle Name" name="middlename">
-                </div>
-                <div class="form-group">
-                  <label for="birthday">Birthday</label>
-                  <input type="date" class="form-control" id="birthday" placeholder="Enter Birthday" name="birthday" max="2013-12-31" required>
-                </div>
-                 <div class="form-group">
-                  <label for="address">Address</label>
-                  <input type="text" class="form-control" id="address" placeholder="Enter Address" name="address" required>
-                </div>
-                <div class="form-group">
-                  <label>Gender</label>
-                  <select name="gender" class="form-control">
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="conact">Contact Number: </label>
-                  <input type="text" class="form-control" id="conact" placeholder="Enter Last Name" name="contact" required>
-                </div>
-                <div class="form-group">
-                  <label for="height">Height</label>
-                  <input type="text" class="form-control" id="height" placeholder="Enter Height" name="height" required>
-                </div>
-                  <div class="form-group">
-                  <label for="weight">Weight</label>
-                  <input type="text" class="form-control" id="weight" placeholder="Enter Weight" name="weight" required>
-                </div>
-                  <div class="form-group">
-                  <label for="targetweight">Target Weight</label>
-                  <input type="text" class="form-control" id="targetweight" placeholder="Enter Target Weight" name="targetweight" required>
-                </div>
-                  <div class="form-group">
-                  <label for="medicalhistory">Medical History</label>
-                  <input type="text" class="form-control" id="medicalhistory" placeholder="Medical History" name="medicalhistory" required>
-                </div>
-<!--                 <div class="form-group">
-                  <label for="age">Age: </label>
-                  <input type="number" class="form-control" id="age" name="age" value="" readonly>
-                </div> -->
+                  <input type="hidden" class="form-control" id="membershipCode" value="<?php echo $random_num; ?>" name="membership_code" readonly> 
+      <div class="col-md-3">
+                    <?php $random_num = mt_rand(00000001, 99999999); ?>
+
+                       <div class="form-group">
+                        <label for="exampleInputLastName">Last Name</label>
+                        <input type="text" class="form-control" id="exampleInputLastName" placeholder="Enter Last Name" name="lastname" required>
+                      </div>
+
+      </div>
+      <div class="col-md-3">
+                      <div class="form-group">
+                        <label for="exampleInputFirstName">First Name</label>
+                        <input type="text" class="form-control" id="exampleInputFirstName" placeholder="Enter First Name" name="firstname" required>
+                      </div>
+      </div>
+      <div class="col-md-3">
+                       <div class="form-group">
+                        <label for="middleName">Middle Name</label>
+                        <input type="text" class="form-control" id="middleName" placeholder="Enter Middle Name" name="middlename">
+                      </div>
+
+      </div>
+      <div class="col-md-3">
+                      <div class="form-group">
+                        <label for="birthday">Birthday</label>
+                        <input type="date" class="form-control" id="birthday" placeholder="Enter Birthday" name="birthday" max="2013-12-31" required>
+                      </div>
+
+      </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+                     <div class="form-group">
+                      <label for="address">Address</label>
+                      <input type="text" class="form-control" id="address" placeholder="Enter Address" name="address" required>
+                    </div>
+    </div>
+
+
+    <div class="col-md-2">
+                    <div class="form-group">
+                      <label>Gender</label>
+                      <select name="gender" class="form-control">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                      </select>
+                    </div>
+    </div>
+
+    <div class="col-md-2">
+                    <div class="form-group">
+                      <label for="conact">Contact Number: </label>
+                      <input type="number" maxlength="11" max="99999999999" class="form-control" id="conact" placeholder="Enter Last Name" name="contact" required>
+                    </div>
+    </div>
+
+    <div class="col-md-2">
+                    <div class="form-group">
+                      <label for="height">Height</label>
+                      <input type="number" class="form-control" id="height" placeholder="Enter Height" name="height" min="1" max="300" required>
+                    </div>
+    </div>
+
+    <div class="col-md-2">
+
+                      <div class="form-group">
+                      <label for="weight">Weight</label>
+                      <input type="number" class="form-control" id="weight" placeholder="Enter Weight" name="weight" min="1" max="500" required>
+                    </div>
+    </div>
+</div>
+
+
+
+
+<div class="row">
+
+<div class="col-md-6">
                 <div class="form-group">
                   <label>Select Membership</label>
                   &nbsp;&nbsp; <a style="color: red; font-style: italic;">*500 Membership Fee charge will also be applied</a>
@@ -174,6 +199,42 @@ $table2 = "SELECT * FROM member_promo WHERE isDeleted = '0'";
 ?>
                   </select>
                 </div>
+
+
+</div>
+
+
+
+<div class="col-md-6">
+                  <div class="form-group">
+                  <label for="medicalhistory">Medical History</label>
+                  <input type="text" class="form-control" id="medicalhistory" placeholder="Medical History" name="medicalhistory" required>
+                </div>
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
               </div>
         
@@ -216,7 +277,7 @@ $table2 = "SELECT * FROM member_promo WHERE isDeleted = '0'";
 
 <?php 
 $username_check = $_SESSION["username"];
-$table2 = "SELECT * FROM member WHERE isDeleted = '0' and isExpired= '0' AND isCancelled = '0' ORDER BY timestamp_date DESC";
+$table2 = "SELECT * FROM member WHERE isDeleted = '0' and isExpired= '0' AND isCancelled = '0'";
         
         
         
@@ -250,7 +311,8 @@ $user_editmodal="user_editmodal".$row['member_id'];
 $user_delmodal="user_delmodal".$row['member_id'];
     echo '
 
-<td><button class="btn btn-primary"  data-toggle="modal" data-target="#'.$user_viewmodal.'"><i class="fa fa-eye"></i></button>&nbsp;</td>
+<td>
+<button class="btn btn-primary"  data-toggle="modal" data-target="#'.$user_viewmodal.'"><i class="fa fa-eye"></i></button>&nbsp;</td>
    ';
 echo
 "

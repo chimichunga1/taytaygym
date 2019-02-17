@@ -3,7 +3,7 @@
 include("connection.php");
 require('fpdf/fpdf.php');
 
-$year = $_POST['year'];
+$year = $_POST['get_year'];
 $total_sales = 0;
 
 $table2 = "SELECT customer_daily.amount,customer_daily.cust_daily_id,customer_daily.cust_firstname,customer_daily.cust_middlename,customer_daily.cust_lastname,customer_daily.cust_contact_no,customer_daily.cust_time_in,customer_sales.time_out FROM customer_daily LEFT JOIN customer_sales ON customer_daily.cust_daily_id=customer_sales.cust_sales_id WHERE customer_daily.isDeleted='0' AND customer_daily.isTimeOut = '1' AND year = '$year'";

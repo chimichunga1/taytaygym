@@ -74,7 +74,7 @@ include("navbar.php");
                 <thead>
                 <tr>
                 
-                  <th>Userame</th>
+                  <th>First Name</th>
                   <th>Log Remarks</th>
                   <th>Date</th>
 

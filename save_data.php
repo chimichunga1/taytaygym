@@ -22,17 +22,38 @@ if(isset($_POST['login']))
 
 	$search= mysqli_fetch_assoc($row);
 
-	if(!empty($search['acc_accessright'] == '1'))
+	if(!empty($search['acc_accessright'] == '1' && $search['isActivated'] == '1'))
 
 		{
 
 
 		    $_SESSION['username']=$search['acc_username'];
+		    $logs_firstname=$search['acc_firstname'];	
+		    $_SESSION['logs_firstname']=$search['acc_firstname'];		    
 		    $_SESSION["user_id"] = $search["acc_id"];
 		    $_SESSION["accessright"] = $search['acc_accessright'];
 		    $_SESSION['logs_username'] = $search['acc_username'];
 		    $_SESSION['session_username'] = $search['acc_username'];
 		    $_SESSION['check_login'] = $search['acc_username'];
+
+		    unset($_SESSION['attempt_counter']);
+
+
+			
+    date_default_timezone_set('Asia/Manila');
+    $date_ph = date('F j, Y g:i:a  ');
+    $_SESSION['session_username'] = $search['acc_username'];
+
+    echo $logs_firstname;
+
+	$logs_remarks = ' LOGGED IN ';
+  
+	$insert_supplier = "INSERT INTO member_logs (`member_username`,`member_status`,`date_log`) VALUES ('".$logs_firstname."','".$logs_remarks."','".$date_ph."') ";
+	$run_insert_supplier = mysqli_query($connect,$insert_supplier);
+
+
+
+
 ?>
 			<script type="text/javascript">
 			<?php echo 'alert("Welcome ' . $_SESSION['check_login'] . '")'; ?>
@@ -42,24 +63,12 @@ if(isset($_POST['login']))
 <?php
 
 
-unset($_SESSION['attempt_counter']);
-
-
-			
-    date_default_timezone_set('Asia/Manila');
-    $date_ph = date('F j, Y g:i:a  ');
-    $_SESSION['session_username'] = $search['username'];
-	$logs_remarks = ' LOGGED IN ';
-  
-	$insert_supplier = "INSERT INTO member_logs (`member_username`,`member_status`,`date_log`) VALUES ('".$search['acc_username']."','".$logs_remarks."','".$date_ph."') ";
-	$run_insert_supplier = mysqli_query($connect,$insert_supplier);
-
 
 
 
 		
 		}
-	elseif(!empty($search['acc_accessright'] == '2'))
+	elseif(!empty($search['acc_accessright'] == '2' && $search['isActivated'] == '1' ))
 
 		{
 
@@ -71,7 +80,7 @@ unset($_SESSION['attempt_counter']);
 		    $_SESSION['check_login'] = $search['acc_username'];
 unset($_SESSION['attempt_counter']);
 			echo '<script language="javascript">';
-			echo 'alert("Welcome User!")';
+			echo 'alert("Welcome ' . $_SESSION['check_login'] . '")';
 			echo '</script>';
 			echo"<script>window.location.href='dashboard.php';</script>";
 
@@ -82,13 +91,32 @@ unset($_SESSION['attempt_counter']);
     $_SESSION['session_username'] = $search['username'];
 	$logs_remarks = ' LOGGED IN ';
   
-	$insert_supplier = "INSERT INTO member_logs (`member_id`,`logs_remarks`,`logs_date`) VALUES ('".$search['acc_id']."','".$logs_remarks."','".$date_ph."') ";
+	$insert_supplier = "INSERT INTO member_logs (`member_id`,`logs_remarks`,`logs_date`) VALUES ('".$search['acc_firstname']."','".$logs_remarks."','".$date_ph."') ";
 	$run_insert_supplier = mysqli_query($connect,$insert_supplier);
 
 
 
 		
 		}
+			elseif(!empty($search['isActivated'] == '0'))
+
+		{
+
+			$_SESSION['user_update'] = $_POST['username'];
+			$_SESSION['update_id'] = $search["acc_id"];
+
+			echo '<script language="javascript">';
+			echo 'alert("First time login you must change your password!")';
+			echo '</script>';
+			echo"<script>window.location.href='account_update.php';</script>";
+
+
+
+
+		
+		}
+
+
 
 		else
 		{
@@ -128,12 +156,80 @@ unset($_SESSION['attempt_counter']);
 
 		}
 
+$username = $_SESSION['username'];
+}
+
+
+
+
+
+if(isset($_POST['update_pass']))
+{
+
+	$get_acc_id = $_POST['get_acc_id'];
+	$new_password = $_POST['password'];
+	$update_account = "UPDATE account SET acc_password = '$new_password',isActivated='1' WHERE acc_id ='$get_acc_id'";
+	$run_update_account = mysqli_query($connect,$update_account);
+
+
+	$get_promo = "SELECT * FROM account WHERE acc_id = '$get_acc_id' AND isDeleted='0' AND isBlocked='0'";
+    $get_promo_id = mysqli_query($connect,$get_promo);
+
+        while($search = mysqli_fetch_array($get_promo_id))
+
+    {
+
+		    $_SESSION['username']=$search['acc_username'];
+		    $_SESSION["user_id"] = $search["acc_id"];
+		    $_SESSION["accessright"] = $search['acc_accessright'];
+		    $_SESSION['session_username'] = $search['acc_username'];
+		    $_SESSION['check_login'] = $search['acc_username'];
+    }
+
+
+
+
+
+
+
+
+
+
+unset($_SESSION['attempt_counter']);
+
+    date_default_timezone_set('Asia/Manila');
+    $date_ph = date('F j, Y g:i:a  ');
+    $_SESSION['session_username'] = $search['username'];
+	$logs_remarks = ' LOGGED IN ';
+
+	$insert_supplier = "INSERT INTO member_logs (`member_id`,`logs_remarks`,`logs_date`) VALUES ('".$search['acc_firstname']."','".$logs_remarks."','".$date_ph."') ";
+	$run_insert_supplier = mysqli_query($connect,$insert_supplier);
+
+
+
+			echo '<script language="javascript">';
+			echo 'alert("Your account has been updated!")';
+			echo '</script>';
+			echo"<script>window.location.href='dashboard.php';</script>";
+
+
+
+
+
 
 }
 
 
 
-$username = $_SESSION['username'];
+
+
+
+
+
+
+
+
+
 
 
 if(isset($_POST['add_accounts']))
@@ -154,9 +250,9 @@ if(isset($_POST['add_accounts']))
 	$lastname = $_POST['lastname'];
 
 	$password = $_POST['password'];
-	$access_right = $_POST['access_right'];
-	$date=date("m/d/Y h:i A");
 
+	$date=date("m/d/Y h:i A");
+$access_right = $_POST['access_right'];
 
 
 	$row=mysqli_query($connect,'SELECT * From `account` WHERE `acc_username`="'.$_POST["username"].'" AND `isDeleted`="0"   ');
@@ -174,7 +270,7 @@ if(empty($search))
     $username = $_SESSION['session_username'];
 	$logs_remarks = ' CREATED ACCOUNT '.$username.' ';
   
-	$insert_supplier = "INSERT INTO member_logs (`member_username`,`member_status`,`date_log`) VALUES ('".$username."','".$logs_remarks."','".$date_ph."') ";
+	$insert_supplier = "INSERT INTO member_logs (`member_username`,`member_status`,`date_log`) VALUES ('".$_SESSION['logs_firstname']."','".$logs_remarks."','".$date_ph."') ";
 	$run_insert_supplier = mysqli_query($connect,$insert_supplier);
 
 
@@ -296,7 +392,20 @@ $year = date('Y');
 $timestamp = date("Y-m-d H:i:s");
 $name=' '.$firstname.' '.$middlename.' '.$lastname.' ';
 
-			$insert_user = "INSERT INTO member (`member_code`,`member_firstname`,`member_middlename`,`member_lastname`,`member_birthdate`,`member_address`,`member_gender`,`member_contact`,`member_height`,`member_weight`,`member_targetweight`,`member_medicalhistory`,`member_sub_id`,`member_age`,`membership_registered`,`membership_expired`,`annual_expire`,`day`,`week`,`month`,`year`,`isPaid`,`isDeleted`,`isExpired`,`amount`,`timestamp_date`) VALUES ('".$membership_code."','".$firstname."','".$middlename."','".$lastname."','".$birthday."','".$address."','".$gender."','".$contact."','".$height."','".$weight."','".$targetweight."','".$medicalhistory."','".$membership."','".$age."','".$today."','".$memberDays."','".$annual_expire."','".$day."','".$week."','".$month."','".$year."','1','0','0','$amount','".$timestamp."') ";
+
+        $select_id = "SELECT * FROM member WHERE member_firstname='$firstname' AND member_middlename='$middlename' AND member_lastname='$lastname' AND isDeleted='0'";
+        $run_select_id = mysqli_query($connect,$select_id);
+
+
+if (mysqli_num_rows($run_select_id) > 0){
+			echo '<script language="javascript">';
+			echo 'alert("USERNAME IS ALREADY TAKEN!")';
+			echo '</script>';
+			echo"<script>window.location.href='transactions_add_member.php';</script>";	
+
+}else{
+
+		$insert_user = "INSERT INTO member (`member_code`,`member_firstname`,`member_middlename`,`member_lastname`,`member_birthdate`,`member_address`,`member_gender`,`member_contact`,`member_height`,`member_weight`,`member_targetweight`,`member_medicalhistory`,`member_sub_id`,`member_age`,`membership_registered`,`membership_expired`,`annual_expire`,`day`,`week`,`month`,`year`,`isPaid`,`isDeleted`,`isExpired`,`amount`) VALUES ('".$membership_code."','".$firstname."','".$middlename."','".$lastname."','".$birthday."','".$address."','".$gender."','".$contact."','".$height."','".$weight."','".$targetweight."','".$medicalhistory."','".$membership."','".$age."','".$today."','".$memberDays."','".$annual_expire."','".$day."','".$week."','".$month."','".$year."','1','0','0','$amount') ";
 			$run_insert_user = mysqli_query($connect,$insert_user);
 
 
@@ -338,7 +447,7 @@ $insert_sales_new = "INSERT INTO member_sales_new (`member_firstname`,`member_mi
 
 	$logs_remarks = ' CREATED MEMBER '.$firstname.' '.$middlename.' '.$lastname.' ';
   
-	$insert_supplier = "INSERT INTO member_logs (`member_username`,`member_status`,`date_log`) VALUES ('".$username."','".$logs_remarks."','".$date_ph."') ";
+	$insert_supplier = "INSERT INTO member_logs (`member_username`,`member_status`,`date_log`) VALUES ('".$_SESSION['logs_firstname']."','".$logs_remarks."','".$date_ph."') ";
 	$run_insert_supplier = mysqli_query($connect,$insert_supplier);
 
 
@@ -370,6 +479,9 @@ $insert_sales_new = "INSERT INTO member_sales_new (`member_firstname`,`member_mi
 
 
 
+}
+
+
 
 
 
@@ -398,6 +510,7 @@ $username_check = $_SESSION["username"];
 
         {
         	$get_username = $row['acc_username'];
+        	$firstname = $row['acc_firstname'];
 
         }
 
@@ -409,7 +522,7 @@ $username_check = $_SESSION["username"];
     $username = $_SESSION['logs_username'];
 	$logs_remarks = ' DELETED ACCOUNT '.$get_username.' ';
   
-	$insert_supplier = "INSERT INTO member_logs (`member_username`,`member_status`,`date_log`) VALUES ('".$username."','".$logs_remarks."','".$date_ph."') ";
+	$insert_supplier = "INSERT INTO member_logs (`member_username`,`member_status`,`date_log`) VALUES ('".$_SESSION['logs_firstname']."','".$logs_remarks."','".$date_ph."') ";
 	$run_insert_supplier = mysqli_query($connect,$insert_supplier);
 
 
@@ -439,7 +552,7 @@ if(isset($_POST['admin_edituser'])){
 
 	$firstname = $_POST['firstname'];
 	$lastname = $_POST['lastname'];
-	$password = $_POST['password'];
+
 	$access_right = $_POST['access_right'];
 	$acc_id = $_POST['acc_id'];
 
@@ -448,7 +561,7 @@ if(isset($_POST['admin_edituser'])){
 
 
 
-	$update_user = "UPDATE account  SET acc_firstname = '$firstname',acc_middlename = '$middlename',acc_lastname = '$lastname',acc_username = '$username',acc_password = '$password',acc_accessright = '$access_right' WHERE acc_id ='$acc_id'";
+	$update_user = "UPDATE account  SET acc_firstname = '$firstname',acc_middlename = '$middlename',acc_lastname = '$lastname',acc_username = '$username',acc_accessright = '$access_right' WHERE acc_id ='$acc_id'";
 	$run_update_user = mysqli_query($connect,$update_user);
 
 
@@ -458,13 +571,13 @@ if(isset($_POST['admin_edituser'])){
     $username = $_SESSION['logs_username'];
 	$logs_remarks = ' UPDATED ACCOUNT '.$username.' ';
   
-	$insert_supplier = "INSERT INTO member_logs (`member_username`,`member_status`,`date_log`) VALUES ('".$username."','".$logs_remarks."','".$date_ph."') ";
+	$insert_supplier = "INSERT INTO member_logs (`member_username`,`member_status`,`date_log`) VALUES ('".$_SESSION['logs_firstname']."','".$logs_remarks."','".$date_ph."') ";
 	$run_insert_supplier = mysqli_query($connect,$insert_supplier);
 
 
 
 
-			echo '<script language="javascript">';
+		echo '<script language="javascript">';
 			echo 'alert("USER SUCCESSFULLY UPDATED")';
 			echo '</script>';
 			echo"<script>window.location.href='account.php';</script>";		
@@ -506,7 +619,7 @@ if(isset($_POST['member_cancel'])){
     $username = $_SESSION['logs_username'];
 	$logs_remarks = ' CANCELLED MEMBER WITH CODE '.$get_username;
   
-	$insert_supplier = "INSERT INTO member_logs (`member_username`,`member_status`,`date_log`) VALUES ('".$username."','".$logs_remarks."','".$date_ph."') ";
+	$insert_supplier = "INSERT INTO member_logs (`member_username`,`member_status`,`date_log`) VALUES ('".$_SESSION['logs_firstname']."','".$logs_remarks."','".$date_ph."') ";
 	$run_insert_supplier = mysqli_query($connect,$insert_supplier);
 
 
@@ -588,7 +701,9 @@ $annual_expire = date ("Y-m-d", strtotime ($today ."+1 year"));
 	$logs_remarks = ' RENEWED MEMBER WITH CODE '.$member_code;
     date_default_timezone_set('Asia/Manila');
     $date_ph = date('F j, Y g:i:a  ');
-	$insert_supplier = "INSERT INTO member_logs (`member_username`,`member_status`,`date_log`) VALUES ('".$username."','".$logs_remarks."','".$date_ph."') ";
+
+    $logs_firstname = $_SESSION['logs_firstname'];
+	$insert_supplier = "INSERT INTO member_logs (`member_username`,`member_status`,`date_log`) VALUES ('".$_SESSION['logs_firstname']."','".$logs_remarks."','".$date_ph."') ";
 	$run_insert_supplier = mysqli_query($connect,$insert_supplier);
 
 
@@ -743,11 +858,11 @@ $insert_sales_new = "INSERT INTO member_sales_new (`member_firstname`,`member_mi
 
 
 
-    $username = $_SESSION['logs_username'];
+    $username = $_SESSION['logs_firstname'];
 	$logs_remarks = ' RENEWED MEMBER WITH CODE '.$member_code;
     date_default_timezone_set('Asia/Manila');
     $date_ph = date('F j, Y g:i:a  ');
-	$insert_supplier = "INSERT INTO member_logs (`member_username`,`member_status`,`date_log`) VALUES ('".$username."','".$logs_remarks."','".$date_ph."') ";
+	$insert_supplier = "INSERT INTO member_logs (`member_username`,`member_status`,`date_log`) VALUES ('".$_SESSION['logs_firstname']."','".$logs_remarks."','".$date_ph."') ";
 	$run_insert_supplier = mysqli_query($connect,$insert_supplier);
 
 echo '<script language="javascript">';
@@ -788,18 +903,38 @@ if($middlename=""){
 
 
 
+$address = $_POST['address'];
+$birthday = $_POST['birthday'];
+$height = $_POST['height'];
+$weight = $_POST['weight'];
+$medicalhistory = $_POST['medicalhistory'];
 
-$timestamp = date("Y-m-d H:i:s");
+
+$explodeBirthdate = explode("-", $birthday);
+$birthDate = $explodeBirthdate[1]."/".$explodeBirthdate[2]."/".$explodeBirthdate[0];
+
+  //date in mm/dd/yyyy format; or it can be in other formats as well
+
+  //explode the date to get month, day and year
+  $birthDate = explode("/", $birthDate);
+  //get age from date or birthdate
+  $age = (date("md", date("U", mktime(0, 0, 0, $birthDate[0], $birthDate[1], $birthDate[2]))) > date("md")
+    ? ((date("Y") - $birthDate[2]) - 1)
+    : (date("Y") - $birthDate[2]));
 
 
-	$insert_customer = "INSERT INTO customer_daily (`cust_firstname`,`cust_middlename`,`cust_lastname`,`cust_time_in`,`cust_contact_no`) VALUES ('".$firstname."','".$middlename."','".$lastname."','".$date_ph."','".$contact."')";
+
+
+
+
+	$insert_customer = "INSERT INTO customer_daily (`cust_firstname`,`cust_middlename`,`cust_lastname`,`cust_time_in`,`cust_contact_no`,`cust_address`,`cust_birthday`,`cust_age`,`cust_height`,`cust_weight`,`cust_medical_history`) VALUES ('".$firstname."','".$middlename."','".$lastname."','".$date_ph."','".$contact."','".$address."','".$birthday."','".$age."','".$height."','".$weight."','".$medicalhistory."')";
 	$run_insert_customer = mysqli_query($connect,$insert_customer);
 
 
-	$username = $_SESSION['logs_username'];
+	$username = $_SESSION['logs_firstname'];
 	$logs_remarks = ' CREATED CUSTOMER '.$firstname.' '.$middlename.' '.$lastname;
 
-	$insert_supplier = "INSERT INTO member_logs (`member_username`,`member_status`,`date_log`) VALUES ('".$username."','".$logs_remarks."','".$date_ph."') ";
+	$insert_supplier = "INSERT INTO member_logs (`member_username`,`member_status`,`date_log`) VALUES ('".$_SESSION['logs_firstname']."','".$logs_remarks."','".$date_ph."') ";
 	$run_insert_supplier = mysqli_query($connect,$insert_supplier);
 
 
@@ -838,6 +973,14 @@ $year = date('Y');
 	$run_insert_customer = mysqli_query($connect,$insert_customer);
 
 
+	$time_in_out = "INSERT INTO daily_time_in_out (`cust_daily_id`,`time_update`) VALUES ('".$cust_daily_id."','".$date_ph."') ";
+	$run_time_in_out = mysqli_query($connect,$time_in_out);
+
+
+
+
+
+
 	echo '<script language="javascript">';
 	echo 'alert("Process Saved!")';
 	echo '</script>';
@@ -869,8 +1012,77 @@ $amount = $_POST['amount'];
 }
 
 
+if(isset($_POST['admin_resetuser'])){
+
+
+$get_userid = $_POST['get_userid'];
 
 
 
+
+	$insert_promo = "UPDATE account SET acc_password='1234',isActivated = '0' WHERE acc_id='$get_userid'";
+	$run_insert_promo = mysqli_query($connect,$insert_promo);
+
+
+	echo '<script language="javascript">';
+	echo 'alert("User has been updated!")';
+	echo '</script>';
+	echo"<script>window.location.href='account.php';</script>";	
+
+
+
+
+}
+
+if(isset($_POST['daily_timeout'])){
+
+    date_default_timezone_set('Asia/Manila');
+    $date_ph = date('F j, Y g:i A  ');
+    $get_cust_daily_id = $_POST['get_userid'];
+    echo $get_cust_daily_id;
+	$time_in_out = "UPDATE daily_time_in_out SET isTimeOut = '1',time_update='$date_ph' WHERE time_in_id='$get_cust_daily_id'";
+	$run_time_in_out = mysqli_query($connect,$time_in_out);
+
+
+
+
+
+	echo '<script language="javascript">';
+	echo 'alert("Process Saved!")';
+	echo '</script>';
+	echo"<script>window.location.href='daily_time_in.php';</script>";	
+
+
+
+
+
+
+
+}
+if(isset($_POST['daily_timein'])){
+
+    date_default_timezone_set('Asia/Manila');
+    $date_ph = date('F j, Y g:i A  ');
+    $get_cust_daily_id = $_POST['get_userid'];
+    echo $get_cust_daily_id;
+	$time_in_out = "UPDATE daily_time_in_out SET isTimeOut = '0',time_update='$date_ph' WHERE time_in_id='$get_cust_daily_id'";
+	$run_time_in_out = mysqli_query($connect,$time_in_out);
+
+
+
+
+
+	echo '<script language="javascript">';
+	echo 'alert("Process Saved!")';
+	echo '</script>';
+	echo"<script>window.location.href='daily_time_out.php';</script>";	
+
+
+
+
+
+
+
+}
 
 ?>

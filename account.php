@@ -104,9 +104,16 @@ include("navbar.php");
                   <input type="text" class="form-control" id="exampleInputUsername" placeholder="Enter Username" name="username" required>
                 </div>
                 <div class="form-group">
+         
+                  <input type="hidden" name="password" value="1234">
+                </div>
+
+
+<!--                 
+                <div class="form-group">
                   <label for="exampleInputPassword1">Password</label>
                   <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Password" name="password" required>
-                </div>
+                </div> -->
                 <div class="form-group">
                   <label>Access Right</label>
                   <select name="access_right" class="form-control">
@@ -143,7 +150,7 @@ include("navbar.php");
                   <th>Date Created</th>
                   <th>Full Name</th>
                   <th>Username</th>
-                  <th>Password</th>
+          <!--         <th>Password</th> -->
                   <th>Actions</th>
 
 
@@ -176,7 +183,7 @@ $table2 = "SELECT * FROM account WHERE isDeleted = '0' and acc_username != '$use
                   <td><?php echo $row['acc_date']; ?></td>
                   <td><?php echo $row['acc_lastname'].', '.$row['acc_firstname'].' '.$row['acc_middlename']; ?></td>
                   <td><?php echo $row['acc_username']; ?></td>
-                  <td><?php echo $row['acc_password']; ?></td>
+       
     
 
 
@@ -186,9 +193,13 @@ $table2 = "SELECT * FROM account WHERE isDeleted = '0' and acc_username != '$use
 
 $user_editmodal="user_editmodal".$row['acc_id'];
 $user_delmodal="user_delmodal".$row['acc_id'];
+$reset_passmodal="reset_passmodal".$row['acc_id'];
     echo '
 
-<td><button class="btn btn-success"  data-toggle="modal" data-target="#'.$user_editmodal.'"><i class="fa fa-edit"></i></button>&nbsp;<button class="btn btn-danger"   data-toggle="modal" data-target="#'.$user_delmodal.'"><i class="fa fa-remove"></i></button></td>
+<td>
+<button class="btn btn-success"  data-toggle="modal" data-target="#'.$user_editmodal.'"><i class="fa fa-edit"></i></button>&nbsp;
+<button class="btn btn-warning"  data-toggle="modal" data-target="#'.$reset_passmodal.'"><i class="fa fa-lock"></i></button>&nbsp;
+<button class="btn btn-danger"   data-toggle="modal" data-target="#'.$user_delmodal.'"><i class="fa fa-remove"></i></button></td>
    ';
 echo
 "
@@ -226,12 +237,12 @@ echo
                   <input type="text" class="form-control" id="exampleInputUsername" value="<?php echo $row['acc_username']; ?>" name="username" required>
 
                 </div>
-                <div class="form-group">
+<!--                 <div class="form-group">
                   <label for="exampleInputPassword1">Password</label>
                   <input type="text" class="form-control" id="exampleInputPassword1" value="<?php echo $row['acc_password']; ?>" name="password" required>
                         
                   <input type="hidden" name="acc_id" value="<?php echo $row['acc_id']; ?>">
-                </div>    
+                </div>  -->   
                 <div class="form-group">
                   <label>Access Right</label>
                   <select name="access_right" class="form-control" required>
@@ -245,6 +256,8 @@ echo "
     </div>
                 </div>
                 <div class='modal-footer'>
+
+                           <input type='hidden' name='acc_id' value='".$row['acc_id']."'>
                     <button type='submit' name='admin_edituser'  class='btn btn-success'>Yes</button>
                     <button type='button' class='btn btn-danger' data-dismiss='modal'>No</button>
   </form>
@@ -284,6 +297,36 @@ Would you like to deactivate this user ?
         </div>
     </div>
 ";
+echo
+"
+    
+    <!-- Modal HTML -->
+    <div id='".$reset_passmodal."' class='modal fade'>
+        <div class='modal-dialog'>
+            <div class='modal-content'>
+                <div class='modal-header'>
+                    <button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>
+                    <h4 class='modal-title'> </h4>
+                </div>
+                <div class='modal-body'>
+                 
+ <form  role='form' action='save_data.php' method='post' >
+    <div class='form-group'>
+Would you like to reset this user's password?
+      
+    </div>
+                </div>
+                <div class='modal-footer'>
+                <input type='hidden' name='get_userid' value='".$row['acc_id']."'>
+                    <button type='submit' name='admin_resetuser'  class='btn btn-success'>Yes</button>
+                    <button type='button' class='btn btn-danger' data-dismiss='modal'>No</button>
+  </form>
+                </div>
+            </div>
+        </div>
+    </div>
+";
+
 
 
 
