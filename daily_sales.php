@@ -222,8 +222,9 @@ $username_check = $_SESSION["username"];
 
 $final_total = 0;
 
+$table2 = "SELECT * FROM customer_sales WHERE week = '$week' AND year = '$year'";
 
-$table2 = "SELECT customer_sales.day,customer_sales.week,customer_sales.month,customer_sales.year,customer_daily.amount,customer_daily.cust_daily_id,customer_daily.cust_firstname,customer_daily.cust_middlename,customer_daily.cust_lastname,customer_daily.cust_contact_no,customer_daily.cust_time_in,customer_sales.time_out FROM customer_daily LEFT JOIN customer_sales ON customer_daily.cust_daily_id=customer_sales.cust_sales_id WHERE customer_daily.isDeleted='0' AND customer_daily.isTimeOut = '1' AND customer_sales.week = '$week' AND customer_sales.year = '$year'";
+
         
         
         
@@ -246,11 +247,11 @@ $final_amount_daily = $final_total;
                   <td><?php echo $row['cust_lastname'].', '.$row['cust_firstname'].' '.$row['cust_middlename']; ?> </td>
       
                   <td><?php echo $row['cust_contact_no'];?></td>
-                  <td><?php echo $row['cust_time_in']; ?></td>
+                  <td><?php echo $row['time_out']; ?></td>
 
 <?php   
-$user_viewmodal="user_viewmodal".$row['cust_daily_id'];
-$user_printmodal="user_printmodal".$row['cust_daily_id'];
+$user_viewmodal="user_viewmodal".$row['cust_id'];
+$user_printmodal="user_printmodal".$row['cust_id'];
 
     echo '
 <td><button class="btn btn-primary"  data-toggle="modal" data-target="#'.$user_printmodal.'"><i class="fa fa-print"></i></button>&nbsp;</td>
@@ -305,7 +306,7 @@ echo
                 <input type='hidden' name='get_day' value='".$row['day']."'>
                 <input type='hidden' name='get_month' value='".$row['month']."'>
                 <input type='hidden' name='get_year' value='".$row['year']."'>                <div class='modal-footer'>
-                <input type='hidden' name='get_userid' value='".$row['cust_daily_id']."'>
+                <input type='hidden' name='get_userid' value='".$row['cust_id']."'>
                     <button type='submit' name='member_cancel'  class='btn btn-success'>Yes</button>
                     <button type='button' class='btn btn-danger' data-dismiss='modal'>No</button>
   </form>
@@ -395,9 +396,9 @@ $year = $_POST['year'];
 $username_check = $_SESSION["username"];
 
 $final_total = 0;
+$table2 = "SELECT * FROM customer_sales WHERE month = '$month' AND year = '$year'";
 
 
-$table2 = "SELECT customer_sales.day,customer_sales.week,customer_sales.month,customer_sales.year,customer_daily.amount,customer_daily.cust_daily_id,customer_daily.cust_firstname,customer_daily.cust_middlename,customer_daily.cust_lastname,customer_daily.cust_contact_no,customer_daily.cust_time_in,customer_sales.time_out FROM customer_daily LEFT JOIN customer_sales ON customer_daily.cust_daily_id=customer_sales.cust_sales_id WHERE customer_daily.isDeleted='0' AND customer_daily.isTimeOut = '1' AND month = '$month' AND year = '$year'";
         
         
         
@@ -419,11 +420,11 @@ $final_amount_daily = $final_total;
                   <td><?php echo $row['cust_lastname'].', '.$row['cust_firstname'].' '.$row['cust_middlename']; ?> </td>
       
                   <td><?php echo $row['cust_contact_no'];?></td>
-                  <td><?php echo $row['cust_time_in']; ?></td>
+                  <td><?php echo $row['time_out']; ?></td>
 
 <?php   
-$user_viewmodal="user_viewmodal".$row['cust_daily_id'];
-$user_printmodal="user_printmodal".$row['cust_daily_id'];
+$user_viewmodal="user_viewmodal".$row['cust_id'];
+$user_printmodal="user_printmodal".$row['cust_id'];
 
     echo '
 
@@ -478,7 +479,7 @@ echo
           
                 <input type='hidden' name='get_month' value='".$row['month']."'>
                 <input type='hidden' name='get_year' value='".$row['year']."'>                
-                <input type='hidden' name='get_userid' value='".$row['cust_daily_id']."'>
+                <input type='hidden' name='get_userid' value='".$row['cust_id']."'>
                     <button type='submit' name='member_cancel'  class='btn btn-success'>Yes</button>
                     <button type='button' class='btn btn-danger' data-dismiss='modal'>No</button>
   </form>
@@ -559,9 +560,9 @@ $year = date("Y");
 $username_check = $_SESSION["username"];
 
 $final_total = 0;
+$table2 = "SELECT * FROM customer_sales WHERE year = '$year'";
 
 
-$table2 = "SELECT customer_sales.day,customer_sales.week,customer_sales.month,customer_sales.year,customer_daily.amount,customer_daily.cust_daily_id,customer_daily.cust_firstname,customer_daily.cust_middlename,customer_daily.cust_lastname,customer_daily.cust_contact_no,customer_daily.cust_time_in,customer_sales.time_out FROM customer_daily LEFT JOIN customer_sales ON customer_daily.cust_daily_id=customer_sales.cust_sales_id WHERE customer_daily.isDeleted='0' AND customer_daily.isTimeOut = '1' AND year = '$year'";
         
         
         
@@ -583,12 +584,12 @@ $final_amount_daily = $final_total;
                   <td><?php echo $row['cust_firstname'].', '.$row['cust_middlename'].' '.$row['cust_lastname']; ?> </td>
       
                   <td><?php echo $row['cust_contact_no'];?></td>
-                  <td><?php echo $row['cust_time_in']; ?></td>
+                  <td><?php echo $row['time_out']; ?></td>
                
 
 <?php   
-$user_viewmodal="user_viewmodal".$row['cust_daily_id'];
-$user_printmodal="user_printmodal".$row['cust_daily_id'];
+$user_viewmodal="user_viewmodal".$row['cust_id'];
+$user_printmodal="user_printmodal".$row['cust_id'];
 
     echo '
 <td><button class="btn btn-primary"  data-toggle="modal" data-target="#'.$user_printmodal.'"><i class="fa fa-print"></i></button>&nbsp;</td>
@@ -646,7 +647,7 @@ echo
 
     
                 <input type='hidden' name='get_year' value='".$row['year']."'>
-                <input type='hidden' name='get_userid' value='".$row['cust_daily_id']."'>
+                <input type='hidden' name='get_userid' value='".$row['cust_id']."'>
                     <button type='submit' name='member_cancel'  class='btn btn-success'>Yes</button>
                     <button type='button' class='btn btn-danger' data-dismiss='modal'>No</button>
   </form>
@@ -733,7 +734,7 @@ $final_total = 0;
 
 
 
-$table2 = "SELECT customer_sales.day,customer_sales.week,customer_sales.month,customer_sales.year,customer_daily.amount,customer_daily.cust_daily_id,customer_daily.cust_firstname,customer_daily.cust_middlename,customer_daily.cust_lastname,customer_daily.cust_contact_no,customer_daily.cust_time_in,customer_sales.time_out FROM customer_daily LEFT JOIN customer_sales ON customer_daily.cust_daily_id=customer_sales.cust_sales_id WHERE customer_daily.isDeleted='0' AND customer_daily.isTimeOut = '1'";
+$table2 = "SELECT * FROM customer_sales";
         
         
         
@@ -754,12 +755,12 @@ $final_amount_daily = $final_total;
                   <td><?php echo $row['cust_firstname'].', '.$row['cust_middlename'].' '.$row['cust_lastname']; ?> </td>
       
                   <td><?php echo $row['cust_contact_no'];?></td>
-                  <td><?php echo $row['cust_time_in']; ?></td>
+                  <td><?php echo $row['time_out']; ?></td>
 
 
 <?php   
-$user_viewmodal="user_viewmodal".$row['cust_daily_id'];
-$user_printmodal="user_printmodal".$row['cust_daily_id'];
+$user_viewmodal="user_viewmodal".$row['cust_id'];
+$user_printmodal="user_printmodal".$row['cust_id'];
     echo '
 
 <td><button class="btn btn-primary"  data-toggle="modal" data-target="#'.$user_printmodal.'"><i class="fa fa-print"></i></button>&nbsp;</td>
@@ -816,7 +817,7 @@ echo
 
 
           <div class='modal-footer'>
-                <input type='hidden' name='get_userid' value='".$row['cust_daily_id']."'>
+                <input type='hidden' name='get_userid' value='".$row['cust_id']."'>
                     <button type='submit' name='member_cancel'  class='btn btn-success'>Yes</button>
                     <button type='button' class='btn btn-danger' data-dismiss='modal'>No</button>
   </form>

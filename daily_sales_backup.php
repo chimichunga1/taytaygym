@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Bootstrap 101 Template</title>
+    <title>DAILY SALES | P4P</title>
 <link rel="apple-touch-icon" sizes="57x57" href="favico/apple-icon-57x57.png">
 <link rel="apple-touch-icon" sizes="60x60" href="favico/apple-icon-60x60.png">
 <link rel="apple-touch-icon" sizes="72x72" href="favico/apple-icon-72x72.png">
@@ -191,9 +191,13 @@ include("navbar.php");
 
 if(isset($_POST['weekly'])){
 
+if((int)$_POST['week'] < 10){
+  $week = "0".$_POST['week'];
+}else{
+  $week = $_POST['week'];
+}
 
 
-$week = "0".$_POST['week'];
 $year = $_POST['year'];
 
 ?>
@@ -203,6 +207,7 @@ $year = $_POST['year'];
                    <th>Full Name</th>               
                   <th>Contact No.</th>
                   <th>Time In</th>
+                  <th>action</th>
                
     
                 </tr>
@@ -218,7 +223,7 @@ $username_check = $_SESSION["username"];
 $final_total = 0;
 
 
-$table2 = "SELECT customer_daily.amount,customer_daily.cust_daily_id,customer_daily.cust_firstname,customer_daily.cust_middlename,customer_daily.cust_lastname,customer_daily.cust_contact_no,customer_daily.cust_time_in,customer_sales.time_out FROM customer_daily LEFT JOIN customer_sales ON customer_daily.cust_daily_id=customer_sales.cust_sales_id WHERE customer_daily.isDeleted='0' AND customer_daily.isTimeOut = '1' AND customer_sales.week = '$week' AND customer_sales.year = '$year'";
+$table2 = "SELECT customer_sales.day,customer_sales.week,customer_sales.month,customer_sales.year,customer_daily.amount,customer_daily.cust_daily_id,customer_daily.cust_firstname,customer_daily.cust_middlename,customer_daily.cust_lastname,customer_daily.cust_contact_no,customer_daily.cust_time_in,customer_sales.time_out FROM customer_daily LEFT JOIN customer_sales ON customer_daily.cust_daily_id=customer_sales.cust_sales_id WHERE customer_daily.isDeleted='0' AND customer_daily.isTimeOut = '1' AND customer_sales.week = '$week' AND customer_sales.year = '$year'";
         
         
         
@@ -238,7 +243,7 @@ $final_amount_daily = $final_total;
 
 
                 <tr>
-                  <td><?php echo $row['cust_lastname'].' '.$row['cust_firstname'].' '.$row['cust_middlename']; ?> </td>
+                  <td><?php echo $row['cust_lastname'].', '.$row['cust_firstname'].' '.$row['cust_middlename']; ?> </td>
       
                   <td><?php echo $row['cust_contact_no'];?></td>
                   <td><?php echo $row['cust_time_in']; ?></td>
@@ -248,8 +253,8 @@ $user_viewmodal="user_viewmodal".$row['cust_daily_id'];
 $user_printmodal="user_printmodal".$row['cust_daily_id'];
 
     echo '
+<td><button class="btn btn-primary"  data-toggle="modal" data-target="#'.$user_printmodal.'"><i class="fa fa-print"></i></button>&nbsp;</td>
 
-<td><button class="btn btn-primary"  data-toggle="modal" data-target="#'.$user_viewmodal.'"><i class="fa fa-eye"></i></button>&nbsp;</td>
    ';
   
 echo
@@ -291,13 +296,15 @@ echo
                 </div>
                 <div class='modal-body'>
                  
- <form  role='form' action='save_data.php' method='post' >
+ <form  role='form' action='print_daily_weekly.php' method='post' >
     <div class='form-group'>
 <center><h3>Would you like to print an invoice ? </h3></center>
       
     </div>
                 </div>
-                <div class='modal-footer'>
+                <input type='hidden' name='get_day' value='".$row['day']."'>
+                <input type='hidden' name='get_month' value='".$row['month']."'>
+                <input type='hidden' name='get_year' value='".$row['year']."'>                <div class='modal-footer'>
                 <input type='hidden' name='get_userid' value='".$row['cust_daily_id']."'>
                     <button type='submit' name='member_cancel'  class='btn btn-success'>Yes</button>
                     <button type='button' class='btn btn-danger' data-dismiss='modal'>No</button>
@@ -321,6 +328,22 @@ echo
 
 </div>
 <div class="col-md-12">
+  <form action="print_daily_weekly.php" method="POST">
+
+<?php 
+echo "<input type='hidden' name='get_week' value='".$week."'>";
+echo "<input type='hidden' name='get_year' value='".$year."'>";
+
+?>
+
+
+
+<button type="submit" name="print_invoice" class="btn btn-success col-md-3"><i class="fa fa-print"></i> Print Data</button>
+
+</form><br>
+  </div>
+
+  <div class="col-md-12">
 <h4>TOTAL SALES : 
 <?php 
 if(isset($final_amount_daily)){
@@ -336,25 +359,14 @@ if(isset($final_amount_daily)){
 $year = date("Y");
 
  ?>
-<h4>ANNUAL SALES OF THIS YEAR <?php echo $year; ?> : 
-<?php 
-$total_annual_initial = 0;
-$table2 = "SELECT customer_daily.amount,customer_daily.cust_daily_id,customer_daily.cust_firstname,customer_daily.cust_middlename,customer_daily.cust_lastname,customer_daily.cust_contact_no,customer_daily.cust_time_in,customer_sales.time_out FROM customer_daily LEFT JOIN customer_sales ON customer_daily.cust_daily_id=customer_sales.cust_sales_id WHERE customer_daily.isDeleted='0' AND customer_daily.isTimeOut = '1'";
-        
-        
-        
-        $run_query2b = mysqli_query($connect,$table2);
 
-            while($row = mysqli_fetch_array($run_query2b))
-        {
-          $total_annual_initial = $total_annual_initial + (int)$row['amount'];
-          $total_annual = $total_annual_initial;
-        }
-        echo $total_annual;
-?>
 
 </h4>
 </div>
+</div>
+
+
+
 <?php
 }elseif (isset($_POST['monthly'])) {
 
@@ -369,7 +381,8 @@ $year = $_POST['year'];
                    <th>Full Name</th>               
                   <th>Contact No.</th>
                   <th>Time In</th>
-                  <th>Action</th>
+                  <th>action</th>
+                  
     
                 </tr>
                 </thead>
@@ -384,7 +397,7 @@ $username_check = $_SESSION["username"];
 $final_total = 0;
 
 
-$table2 = "SELECT customer_daily.amount,customer_daily.cust_daily_id,customer_daily.cust_firstname,customer_daily.cust_middlename,customer_daily.cust_lastname,customer_daily.cust_contact_no,customer_daily.cust_time_in,customer_sales.time_out FROM customer_daily LEFT JOIN customer_sales ON customer_daily.cust_daily_id=customer_sales.cust_sales_id WHERE customer_daily.isDeleted='0' AND customer_daily.isTimeOut = '1' AND month = '$month' AND year = '$year'";
+$table2 = "SELECT customer_sales.day,customer_sales.week,customer_sales.month,customer_sales.year,customer_daily.amount,customer_daily.cust_daily_id,customer_daily.cust_firstname,customer_daily.cust_middlename,customer_daily.cust_lastname,customer_daily.cust_contact_no,customer_daily.cust_time_in,customer_sales.time_out FROM customer_daily LEFT JOIN customer_sales ON customer_daily.cust_daily_id=customer_sales.cust_sales_id WHERE customer_daily.isDeleted='0' AND customer_daily.isTimeOut = '1' AND month = '$month' AND year = '$year'";
         
         
         
@@ -403,7 +416,7 @@ $final_amount_daily = $final_total;
 
 
                 <tr>
-                  <td><?php echo $row['cust_lastname'].' '.$row['cust_firstname'].' '.$row['cust_middlename']; ?> </td>
+                  <td><?php echo $row['cust_lastname'].', '.$row['cust_firstname'].' '.$row['cust_middlename']; ?> </td>
       
                   <td><?php echo $row['cust_contact_no'];?></td>
                   <td><?php echo $row['cust_time_in']; ?></td>
@@ -414,7 +427,7 @@ $user_printmodal="user_printmodal".$row['cust_daily_id'];
 
     echo '
 
-<td><button class="btn btn-primary"  data-toggle="modal" data-target="#'.$user_viewmodal.'"><i class="fa fa-eye"></i></button>&nbsp;</td>
+<td><button class="btn btn-primary"  data-toggle="modal" data-target="#'.$user_printmodal.'"><i class="fa fa-print"></i></button>&nbsp;</td>
    ';
   
 echo
@@ -455,13 +468,16 @@ echo
                 </div>
                 <div class='modal-body'>
                  
- <form  role='form' action='save_data.php' method='post' >
+ <form  role='form' action='print_daily_monthly.php' method='post' >
     <div class='form-group'>
 <center><h3>Would you like to print an invoice ? </h3></center>
       
     </div>
                 </div>
                 <div class='modal-footer'>
+          
+                <input type='hidden' name='get_month' value='".$row['month']."'>
+                <input type='hidden' name='get_year' value='".$row['year']."'>                
                 <input type='hidden' name='get_userid' value='".$row['cust_daily_id']."'>
                     <button type='submit' name='member_cancel'  class='btn btn-success'>Yes</button>
                     <button type='button' class='btn btn-danger' data-dismiss='modal'>No</button>
@@ -484,7 +500,21 @@ echo
 </div>
 
 </div>
+<div class="col-md-12">
+  <form action="print_daily_monthly.php" method="POST">
 
+<?php 
+echo "<input type='hidden' name='get_month' value='".$month."'>";
+echo "<input type='hidden' name='get_year' value='".$year."'>";
+
+?>
+
+
+
+<button type="submit" name="print_invoice" class="btn btn-success col-md-3"><i class="fa fa-print"></i> Print Data</button>
+
+</form><br>
+  </div>
 <div class="col-md-12">
 <h4>TOTAL SALES : 
 <?php 
@@ -501,22 +531,6 @@ if(isset($final_amount_daily)){
 $year = date("Y");
 
  ?>
-<h4>ANNUAL SALES OF THIS YEAR <?php echo $year; ?> : 
-<?php 
-$total_annual_initial = 0;
-$table2 = "SELECT customer_daily.amount,customer_daily.cust_daily_id,customer_daily.cust_firstname,customer_daily.cust_middlename,customer_daily.cust_lastname,customer_daily.cust_contact_no,customer_daily.cust_time_in,customer_sales.time_out FROM customer_daily LEFT JOIN customer_sales ON customer_daily.cust_daily_id=customer_sales.cust_sales_id WHERE customer_daily.isDeleted='0' AND customer_daily.isTimeOut = '1'";
-        
-        
-        
-        $run_query2b = mysqli_query($connect,$table2);
-
-            while($row = mysqli_fetch_array($run_query2b))
-        {
-          $total_annual_initial = $total_annual_initial + (int)$row['amount'];
-          $total_annual = $total_annual_initial;
-        }
-        echo $total_annual;
-?>
 
 </h4>
 </div>
@@ -531,7 +545,8 @@ $table2 = "SELECT customer_daily.amount,customer_daily.cust_daily_id,customer_da
                    <th>Full Name</th>               
                   <th>Contact No.</th>
                   <th>Time In</th>
-                  <th>Action</th>
+                  <th>action</th>
+                  
     
                 </tr>
                 </thead>
@@ -546,7 +561,7 @@ $username_check = $_SESSION["username"];
 $final_total = 0;
 
 
-$table2 = "SELECT customer_daily.amount,customer_daily.cust_daily_id,customer_daily.cust_firstname,customer_daily.cust_middlename,customer_daily.cust_lastname,customer_daily.cust_contact_no,customer_daily.cust_time_in,customer_sales.time_out FROM customer_daily LEFT JOIN customer_sales ON customer_daily.cust_daily_id=customer_sales.cust_sales_id WHERE customer_daily.isDeleted='0' AND customer_daily.isTimeOut = '1' AND year = '$year'";
+$table2 = "SELECT customer_sales.day,customer_sales.week,customer_sales.month,customer_sales.year,customer_daily.amount,customer_daily.cust_daily_id,customer_daily.cust_firstname,customer_daily.cust_middlename,customer_daily.cust_lastname,customer_daily.cust_contact_no,customer_daily.cust_time_in,customer_sales.time_out FROM customer_daily LEFT JOIN customer_sales ON customer_daily.cust_daily_id=customer_sales.cust_sales_id WHERE customer_daily.isDeleted='0' AND customer_daily.isTimeOut = '1' AND year = '$year'";
         
         
         
@@ -565,7 +580,7 @@ $final_amount_daily = $final_total;
 
 
                 <tr>
-                  <td><?php echo $row['cust_firstname'].' '.$row['cust_middlename'].' '.$row['cust_lastname']; ?> </td>
+                  <td><?php echo $row['cust_firstname'].', '.$row['cust_middlename'].' '.$row['cust_lastname']; ?> </td>
       
                   <td><?php echo $row['cust_contact_no'];?></td>
                   <td><?php echo $row['cust_time_in']; ?></td>
@@ -576,8 +591,8 @@ $user_viewmodal="user_viewmodal".$row['cust_daily_id'];
 $user_printmodal="user_printmodal".$row['cust_daily_id'];
 
     echo '
+<td><button class="btn btn-primary"  data-toggle="modal" data-target="#'.$user_printmodal.'"><i class="fa fa-print"></i></button>&nbsp;</td>
 
-<td><button class="btn btn-primary"  data-toggle="modal" data-target="#'.$user_viewmodal.'"><i class="fa fa-eye"></i></button>&nbsp;</td>
    ';
   
 echo
@@ -619,13 +634,18 @@ echo
                 </div>
                 <div class='modal-body'>
                  
- <form  role='form' action='save_data.php' method='post' >
+ <form  role='form' action='print_daily_yearly.php' method='post' >
     <div class='form-group'>
 <center><h3>Would you like to print an invoice ? </h3></center>
       
     </div>
                 </div>
                 <div class='modal-footer'>
+
+
+
+    
+                <input type='hidden' name='get_year' value='".$row['year']."'>
                 <input type='hidden' name='get_userid' value='".$row['cust_daily_id']."'>
                     <button type='submit' name='member_cancel'  class='btn btn-success'>Yes</button>
                     <button type='button' class='btn btn-danger' data-dismiss='modal'>No</button>
@@ -648,7 +668,21 @@ echo
 </div>
 
 </div>
+<div class="col-md-12">
+  <form action="print_daily_yearly.php" method="POST">
 
+<?php 
+
+echo "<input type='hidden' name='get_year' value='".$year."'>";
+
+?>
+
+
+
+<button type="submit" name="print_invoice" class="btn btn-success col-md-3"><i class="fa fa-print"></i> Print Data</button>
+
+</form><br>
+  </div>
 <div class="col-md-12">
 <h4>TOTAL SALES : 
 <?php 
@@ -665,22 +699,7 @@ if(isset($final_amount_daily)){
 $year = date("Y");
 
  ?>
-<h4>ANNUAL SALES OF THIS YEAR <?php echo $year; ?> : 
-<?php 
-$total_annual_initial = 0;
-$table2 = "SELECT customer_daily.amount,customer_daily.cust_daily_id,customer_daily.cust_firstname,customer_daily.cust_middlename,customer_daily.cust_lastname,customer_daily.cust_contact_no,customer_daily.cust_time_in,customer_sales.time_out FROM customer_daily LEFT JOIN customer_sales ON customer_daily.cust_daily_id=customer_sales.cust_sales_id WHERE customer_daily.isDeleted='0' AND customer_daily.isTimeOut = '1'";
-        
-        
-        
-        $run_query2b = mysqli_query($connect,$table2);
 
-            while($row = mysqli_fetch_array($run_query2b))
-        {
-          $total_annual_initial = $total_annual_initial + (int)$row['amount'];
-          $total_annual = $total_annual_initial;
-        }
-        echo $total_annual;
-?>
 
 </h4>
 </div>
@@ -699,6 +718,7 @@ $table2 = "SELECT customer_daily.amount,customer_daily.cust_daily_id,customer_da
                    <th>Full Name</th>               
                   <th>Contact No.</th>
                   <th>Time In</th>
+                  <th>action</th>
     
                 </tr>
                 </thead>
@@ -713,7 +733,7 @@ $final_total = 0;
 
 
 
-$table2 = "SELECT customer_daily.amount,customer_daily.cust_daily_id,customer_daily.cust_firstname,customer_daily.cust_middlename,customer_daily.cust_lastname,customer_daily.cust_contact_no,customer_daily.cust_time_in,customer_sales.time_out FROM customer_daily LEFT JOIN customer_sales ON customer_daily.cust_daily_id=customer_sales.cust_sales_id WHERE customer_daily.isDeleted='0' AND customer_daily.isTimeOut = '1'";
+$table2 = "SELECT customer_sales.day,customer_sales.week,customer_sales.month,customer_sales.year,customer_daily.amount,customer_daily.cust_daily_id,customer_daily.cust_firstname,customer_daily.cust_middlename,customer_daily.cust_lastname,customer_daily.cust_contact_no,customer_daily.cust_time_in,customer_sales.time_out FROM customer_daily LEFT JOIN customer_sales ON customer_daily.cust_daily_id=customer_sales.cust_sales_id WHERE customer_daily.isDeleted='0' AND customer_daily.isTimeOut = '1'";
         
         
         
@@ -731,7 +751,7 @@ $final_amount_daily = $final_total;
 
 
                 <tr>
-                  <td><?php echo $row['cust_firstname'].' '.$row['cust_middlename'].' '.$row['cust_lastname']; ?> </td>
+                  <td><?php echo $row['cust_firstname'].', '.$row['cust_middlename'].' '.$row['cust_lastname']; ?> </td>
       
                   <td><?php echo $row['cust_contact_no'];?></td>
                   <td><?php echo $row['cust_time_in']; ?></td>
@@ -740,7 +760,10 @@ $final_amount_daily = $final_total;
 <?php   
 $user_viewmodal="user_viewmodal".$row['cust_daily_id'];
 $user_printmodal="user_printmodal".$row['cust_daily_id'];
+    echo '
 
+<td><button class="btn btn-primary"  data-toggle="modal" data-target="#'.$user_printmodal.'"><i class="fa fa-print"></i></button>&nbsp;</td>
+   ';
 
 echo
 "
@@ -780,13 +803,19 @@ echo
                 </div>
                 <div class='modal-body'>
                  
- <form  role='form' action='save_data.php' method='post' >
+ <form  role='form' action='daily_print.php' method='post' >
     <div class='form-group'>
 <center><h3>Would you like to print an invoice ? </h3></center>
       
     </div>
                 </div>
-                <div class='modal-footer'>
+                <input type='hidden' name='get_day' value='".$row['day']."'>
+                <input type='hidden' name='get_month' value='".$row['month']."'>
+                <input type='hidden' name='get_year' value='".$row['year']."'>              
+
+
+
+          <div class='modal-footer'>
                 <input type='hidden' name='get_userid' value='".$row['cust_daily_id']."'>
                     <button type='submit' name='member_cancel'  class='btn btn-success'>Yes</button>
                     <button type='button' class='btn btn-danger' data-dismiss='modal'>No</button>
@@ -809,7 +838,15 @@ echo
 </div>
 
 </div>
+<div class="col-md-12">
+  <form action="print_daily_today.php" method="POST">
 
+
+
+<button type="submit" name="print_invoice" class="btn btn-success col-md-3"><i class="fa fa-print"></i> Print Today's Sales</button>
+
+</form><br>
+  </div>
 <div class="col-md-12">
 <h4>TOTAL SALES : 
 <?php 
@@ -827,22 +864,6 @@ if(isset($final_amount_daily)){
 $year = date("Y");
 
  ?>
-<h4>ANNUAL SALES OF THIS YEAR <?php echo $year; ?> : 
-<?php 
-$total_annual_initial = 0;
-$table2 = "SELECT customer_daily.amount,customer_daily.cust_daily_id,customer_daily.cust_firstname,customer_daily.cust_middlename,customer_daily.cust_lastname,customer_daily.cust_contact_no,customer_daily.cust_time_in,customer_sales.time_out FROM customer_daily LEFT JOIN customer_sales ON customer_daily.cust_daily_id=customer_sales.cust_sales_id WHERE customer_daily.isDeleted='0' AND customer_daily.isTimeOut = '1'";
-        
-        
-        
-        $run_query2b = mysqli_query($connect,$table2);
-
-            while($row = mysqli_fetch_array($run_query2b))
-        {
-          $total_annual_initial = $total_annual_initial + (int)$row['amount'];
-          $total_annual = $total_annual_initial;
-        }
-        echo $total_annual;
-?>
 
 </h4>
 

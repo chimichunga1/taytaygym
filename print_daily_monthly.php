@@ -11,8 +11,7 @@ $year = $_POST['get_year'];
 
 
 $total_sales = 0;
-
-$table2 = "SELECT customer_daily.amount,customer_daily.cust_daily_id,customer_daily.cust_firstname,customer_daily.cust_middlename,customer_daily.cust_lastname,customer_daily.cust_contact_no,customer_daily.cust_time_in,customer_sales.time_out FROM customer_daily LEFT JOIN customer_sales ON customer_daily.cust_daily_id=customer_sales.cust_sales_id WHERE customer_daily.isDeleted='0' AND customer_daily.isTimeOut = '1' AND month = '$month' AND year = '$year'";
+$table2 = "SELECT * FROM customer_sales WHERE isDeleted='0' AND month = '$month' AND year = '$year'";
 
         
         $run_query2b = mysqli_query($connect,$table2);
@@ -90,7 +89,7 @@ $pdf->Cell(98 ,10,'Time In  ',1,0,'C');
 $pdf->SetFont('Arial','',12);
 $pdf->Cell(25 ,4,'',0,1);
 
-$table2 = "SELECT customer_daily.amount,customer_daily.cust_daily_id,customer_daily.cust_firstname,customer_daily.cust_middlename,customer_daily.cust_lastname,customer_daily.cust_contact_no,customer_daily.cust_time_in,customer_sales.time_out FROM customer_daily LEFT JOIN customer_sales ON customer_daily.cust_daily_id=customer_sales.cust_sales_id WHERE customer_daily.isDeleted='0' AND customer_daily.isTimeOut = '1' AND month = '$month' AND year = '$year'";
+$table2 = "SELECT * FROM customer_sales WHERE isDeleted='0' AND month = '$month' AND year = '$year'";
 
 
         

@@ -969,7 +969,16 @@ $week = date('W');
 $month = date('F');
 $year = date('Y');
 
-	$insert_customer = "INSERT INTO customer_sales (`cust_id`,`time_out`,`day`,`week`,`month`,`year`) VALUES ('".$cust_daily_id."','".$date_ph."','".$day."','".$week."','".$month."','".$year."') ";
+$get_firstname = $_POST['get_firstname'];
+$get_middlename = $_POST['get_middlename'];
+$get_lastname = $_POST['get_lastname'];
+$get_contact = $_POST['get_contact'];
+
+
+
+
+
+	$insert_customer = "INSERT INTO customer_sales (`cust_id`,`time_out`,`day`,`week`,`month`,`year`,`cust_firstname`,`cust_middlename`,`cust_lastname`,`cust_contact_no`) VALUES ('".$cust_daily_id."','".$date_ph."','".$day."','".$week."','".$month."','".$year."','".$get_firstname."','".$get_middlename."','".$get_lastname."','".$get_contact."') ";
 	$run_insert_customer = mysqli_query($connect,$insert_customer);
 
 
@@ -1047,6 +1056,10 @@ if(isset($_POST['daily_timeout'])){
 
 
 
+
+
+
+
 	echo '<script language="javascript">';
 	echo 'alert("Process Saved!")';
 	echo '</script>';
@@ -1067,16 +1080,47 @@ if(isset($_POST['daily_timein'])){
     echo $get_cust_daily_id;
 	$time_in_out = "UPDATE daily_time_in_out SET isTimeOut = '0',time_update='$date_ph' WHERE time_in_id='$get_cust_daily_id'";
 	$run_time_in_out = mysqli_query($connect,$time_in_out);
+$get_cust_id = $_POST['get_cust_id'];
+
+	$get_customer = "SELECT * FROM customer_daily WHERE cust_daily_id = '$get_cust_id' AND isDeleted='0'";
+    $get_customer_id = mysqli_query($connect,$get_customer);
+
+        while($search = mysqli_fetch_array($get_customer_id))
+
+    {
+
+		   $firstname=$search['cust_firstname'];
+		  $middlename = $search['cust_middlename'];
+		  $lastname = $search['cust_lastname'];
+		  $get_contact = $search['cust_contact_no'];
+    }
 
 
 
 
 
+
+
+
+
+
+$day = date('d');
+$week = date('W');
+$month = date('F');
+$year = date('Y');
+
+
+
+
+	$insert_customer = "INSERT INTO customer_sales (`cust_id`,`time_out`,`day`,`week`,`month`,`year`,`cust_firstname`,`cust_middlename`,`cust_lastname`,`cust_contact_no`) VALUES ('".$get_cust_id."','".$date_ph."','".$day."','".$week."','".$month."','".$year."','".$firstname."','".$middlename."','".$lastname."','".$get_contact."') ";
+	$run_insert_customer = mysqli_query($connect,$insert_customer);
+
+/*
 	echo '<script language="javascript">';
 	echo 'alert("Process Saved!")';
 	echo '</script>';
 	echo"<script>window.location.href='daily_time_out.php';</script>";	
-
+*/
 
 
 

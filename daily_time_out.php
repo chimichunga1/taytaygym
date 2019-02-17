@@ -794,6 +794,8 @@ echo
 
 
           <div class='modal-footer'>
+                <input type='hidden' name='get_cust_id' value='".$row['cust_daily_id']."'>
+
                 <input type='hidden' name='get_userid' value='".$row['time_in_id']."'>
                     <button type='submit' name='daily_timein'  class='btn btn-success'>Yes</button>
                     <button type='button' class='btn btn-danger' data-dismiss='modal'>No</button>

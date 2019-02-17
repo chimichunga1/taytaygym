@@ -257,7 +257,19 @@ echo
     </div>
                 </div>
                 <div class='modal-footer'>
-                               <input type='hidden' name='cust_daily_id' value='".$row['cust_daily_id']."'>
+
+
+
+
+
+
+
+
+                    <input type='hidden' name='get_firstname' value='".$row['cust_firstname']."'>
+                    <input type='hidden' name='get_middlename' value='".$row['cust_middlename']."'>
+                    <input type='hidden' name='get_lastname' value='".$row['cust_lastname']."'>
+                    <input type='hidden' name='get_contact' value='".$row['cust_contact_no']."'>                    
+                    <input type='hidden' name='cust_daily_id' value='".$row['cust_daily_id']."'>
                     <button type='submit' name='customer_payout'  class='btn btn-success'>Yes</button>
                     <button type='button' class='btn btn-danger' data-dismiss='modal'>No</button>
   </form>
