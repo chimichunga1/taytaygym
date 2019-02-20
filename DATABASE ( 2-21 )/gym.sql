@@ -68,13 +68,14 @@ CREATE TABLE `customer_daily` (
   `cust_medical_history` varchar(255) DEFAULT NULL,
   `isTimeOut` varchar(255) DEFAULT '0',
   `isDeleted` varchar(255) DEFAULT '0',
+  `isMember` varchar(255) DEFAULT '0',
   PRIMARY KEY (`cust_daily_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 /*Data for the table `customer_daily` */
 
-insert  into `customer_daily`(`cust_daily_id`,`cust_firstname`,`cust_middlename`,`cust_lastname`,`cust_contact_no`,`cust_time_in`,`amount`,`cust_address`,`cust_birthday`,`cust_age`,`cust_height`,`cust_weight`,`cust_medical_history`,`isTimeOut`,`isDeleted`) values 
-(1,'Juan Miguel','Ponce','Cortez','123','February 17, 2019 10:36 PM  ','200','a','1996-08-28','22','123','123','asd','1','0');
+insert  into `customer_daily`(`cust_daily_id`,`cust_firstname`,`cust_middlename`,`cust_lastname`,`cust_contact_no`,`cust_time_in`,`amount`,`cust_address`,`cust_birthday`,`cust_age`,`cust_height`,`cust_weight`,`cust_medical_history`,`isTimeOut`,`isDeleted`,`isMember`) values 
+(1,'Juan Miguel','Ponce','Cortez','123','February 17, 2019 10:36 PM  ','200','a','1996-08-28','22','123','123','asd','1','0','0');
 
 /*Table structure for table `customer_sales` */
 
@@ -118,7 +119,7 @@ CREATE TABLE `daily_time_in_out` (
 /*Data for the table `daily_time_in_out` */
 
 insert  into `daily_time_in_out`(`time_in_id`,`cust_daily_id`,`time_update`,`isTimeOut`) values 
-(1,'1','February 17, 2019 10:36 PM  ','0');
+(1,'1','February 20, 2019 9:32 PM  ','1');
 
 /*Table structure for table `member` */
 
@@ -138,6 +139,7 @@ CREATE TABLE `member` (
   `member_weight` varchar(255) DEFAULT NULL,
   `member_targetweight` varchar(255) DEFAULT NULL,
   `member_medicalhistory` varchar(255) DEFAULT NULL,
+  `member_package` varchar(255) DEFAULT NULL,
   `member_sub_id` varchar(255) DEFAULT NULL,
   `member_age` varchar(255) DEFAULT NULL,
   `membership_registered` varchar(255) DEFAULT NULL,
@@ -152,17 +154,23 @@ CREATE TABLE `member` (
   `isDeleted` varchar(255) DEFAULT '0',
   `isExpired` varchar(255) DEFAULT '0',
   `isCancelled` varchar(255) DEFAULT '0',
+  `isTimeIn` varchar(255) DEFAULT '1',
+  `isTimeOut` varchar(255) DEFAULT '0',
   PRIMARY KEY (`member_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
 /*Data for the table `member` */
 
-insert  into `member`(`member_id`,`member_code`,`member_firstname`,`member_middlename`,`member_lastname`,`member_birthdate`,`member_address`,`member_gender`,`member_contact`,`member_height`,`member_weight`,`member_targetweight`,`member_medicalhistory`,`member_sub_id`,`member_age`,`membership_registered`,`membership_expired`,`annual_expire`,`day`,`week`,`month`,`year`,`amount`,`isPaid`,`isDeleted`,`isExpired`,`isCancelled`) values 
-(1,'48038283','Juan Miguel','Ponce','Cortez','1996-08-28','Makati City','Male','123','123','123','4','a','1','22','2019-02-16 17:56:13','2019-03-16','2020-02-16','16','07','February','2019','1000','1','0','0','0'),
-(4,'94872062','asd','asd','asd','1996-08-28','asd','Male','123','123','123','123','123','1','22','2019-02-16 18:45:52','2019-03-16','2020-02-16','16','07','February','2019','1000','1','0','0','0'),
-(29,'68326826','Juan Miguelssss','aaa','Cortez','1996-08-28','Makati City','Male','3','175','123','123','123','1','22','2019-02-17 12:54:49','2019-03-17','2020-02-17','17','07','February','2019','1000','1','0','0','0'),
-(30,'80635784','dwa','w','asd','1996-08-28','Makati City','Male','123','123','123','123','123','1','22','2019-02-17 12:56:31','2019-03-17','2020-02-17','17','07','February','2019','1000','1','0','0','0'),
-(31,'<br />\r\n<b>Notice</b>:  Undefined variable: random_num in <b>C:xampphtdocsgym	ransactions_add_member.php</b> on line <b>88</b><br />\r\n','asd','as','asd','1996-08-28','asd','Male','123123123123123123','12','212','','asdasd','1','22','2019-02-17 13:33:46','2019-03-17','2020-02-17','17','07','February','2019','1000','1','0','0','0');
+insert  into `member`(`member_id`,`member_code`,`member_firstname`,`member_middlename`,`member_lastname`,`member_birthdate`,`member_address`,`member_gender`,`member_contact`,`member_height`,`member_weight`,`member_targetweight`,`member_medicalhistory`,`member_package`,`member_sub_id`,`member_age`,`membership_registered`,`membership_expired`,`annual_expire`,`day`,`week`,`month`,`year`,`amount`,`isPaid`,`isDeleted`,`isExpired`,`isCancelled`,`isTimeIn`,`isTimeOut`) values 
+(2,'31669180','','','','','','Female','','','','123','',NULL,'1','','2019-02-20 20:46:55','2019-03-20','2020-02-20','20','08','February','2019','1000','1','0','0','0','1','0'),
+(3,'49246891','','','','','','Male','','','','2','',NULL,'1','','2019-02-20 20:47:34','2019-03-20','2020-02-20','20','08','February','2019','1000','1','0','0','0','1','0'),
+(4,'49246891','','','','','','Male','','','','2','',NULL,'1','','2019-02-20 20:48:10','2019-03-20','2020-02-20','20','08','February','2019','1000','1','0','0','0','1','0'),
+(5,'22298509','','','','','','Male','','','','21','',NULL,'1','','2019-02-20 20:50:08','2019-03-20','2020-02-20','20','08','February','2019','1000','1','0','0','0','1','0'),
+(6,'22298509','Juan Miguel','Ponce','Cortez','1996-08-28','a','Male','123','123','123','21','asd',NULL,'1','22','2019-02-20 20:50:20','2019-03-20','2020-02-20','20','08','February','2019','1000','1','0','0','0','1','0'),
+(7,'63825237','','','','','','Male','','','','1','',NULL,'1','','2019-02-20 20:50:42','2019-03-20','2020-02-20','20','08','February','2019','1000','1','0','0','0','1','0'),
+(8,'85258713','Juan Miguel','Ponce','Cortez','1996-08-28','a','Male','123','123','123','12','asd',NULL,'1','22','2019-02-20 20:52:44','2019-03-20','2020-02-20','20','08','February','2019','1000','1','0','0','0','1','0'),
+(9,'53032959','e','1','a','1996-08-28','a','Male','12','32','12','123','asd',NULL,'1','22','2019-02-20 20:54:00','2019-03-20','2020-02-20','20','08','February','2019','1000','1','0','0','0','1','0'),
+(10,'8716801','f','a','awwd','1996-08-28','123','Male','123','123','123','123','asd',NULL,'1','22','2019-02-20 21:27:09','2019-03-20','2020-02-20','20','08','February','2019','1000','1','0','0','0','1','0');
 
 /*Table structure for table `member_cancelled` */
 
@@ -204,7 +212,7 @@ CREATE TABLE `member_logs` (
   `date_log` varchar(255) DEFAULT NULL,
   `isDeleted` varchar(254) DEFAULT '0',
   PRIMARY KEY (`member_logs_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 
 /*Data for the table `member_logs` */
 
@@ -218,7 +226,16 @@ insert  into `member_logs`(`member_logs_id`,`member_username`,`member_status`,`d
 (7,'admin',' CREATED CUSTOMER b c a','February 17, 2019 9:57 PM  ','0'),
 (8,'admin',' CREATED CUSTOMER Juan Miguel Ponce Cortez','February 17, 2019 10:00 PM  ','0'),
 (9,'admin',' CREATED CUSTOMER Angelo Something Ferrer','February 17, 2019 10:31 PM  ','0'),
-(10,'admin',' CREATED CUSTOMER Juan Miguel Ponce Cortez','February 17, 2019 10:36 PM  ','0');
+(10,'admin',' CREATED CUSTOMER Juan Miguel Ponce Cortez','February 17, 2019 10:36 PM  ','0'),
+(11,'admin',' LOGGED IN ','February 19, 2019 8:21:pm  ','0'),
+(12,'admin',' LOGGED IN ','February 19, 2019 8:21:pm  ','0'),
+(13,'admin',' CREATED MEMBER v c a ','February 19, 2019 8:35 pm  ','0'),
+(14,'admin',' CREATED MEMBER b f a ','February 19, 2019 8:36 pm  ','0'),
+(15,'admin',' CREATED MEMBER B C A ','February 19, 2019 8:38 pm  ','0'),
+(16,'admin',' LOGGED IN ','February 20, 2019 7:04:pm  ','0'),
+(17,'admin',' LOGGED IN ','February 20, 2019 8:49:pm  ','0'),
+(18,'admin',' CREATED MEMBER e 1 a ','February 20, 2019 8:54 pm  ','0'),
+(19,'admin',' CREATED MEMBER f a awwd ','February 20, 2019 9:27 pm  ','0');
 
 /*Table structure for table `member_promo` */
 
@@ -247,7 +264,7 @@ CREATE TABLE `member_sales` (
   `annual_expire` varchar(255) DEFAULT NULL,
   `isDeleted` varchar(255) DEFAULT '0',
   PRIMARY KEY (`member_sales_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8;
 
 /*Data for the table `member_sales` */
 
@@ -282,7 +299,10 @@ insert  into `member_sales`(`member_sales_id`,`member_username`,`member_status`,
 (28,NULL,NULL,'February 16, 2019 9:17 pm  ',NULL,'0'),
 (29,NULL,NULL,'February 17, 2019 12:54 pm  ',NULL,'0'),
 (30,NULL,NULL,'February 17, 2019 12:56 pm  ',NULL,'0'),
-(31,NULL,NULL,'February 17, 2019 1:33 pm  ',NULL,'0');
+(31,NULL,NULL,'February 17, 2019 1:33 pm  ',NULL,'0'),
+(32,NULL,NULL,'February 19, 2019 8:35 pm  ',NULL,'0'),
+(33,NULL,NULL,'February 19, 2019 8:36 pm  ',NULL,'0'),
+(34,NULL,NULL,'February 19, 2019 8:38 pm  ',NULL,'0');
 
 /*Table structure for table `member_sales_new` */
 
@@ -302,7 +322,7 @@ CREATE TABLE `member_sales_new` (
   `year` varchar(255) DEFAULT NULL,
   `member_package` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`member_sales_new_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
 
 /*Data for the table `member_sales_new` */
 
@@ -337,7 +357,34 @@ insert  into `member_sales_new`(`member_sales_new_id`,`member_firstname`,`member
 (28,'asdasd','asdasd','asdasd','1000','2019-02-16 21:17:22','2020-02-16','16','07','February','2019','1 Month Package for P1,000'),
 (29,'Juan Miguelssss','aaa','Cortez','1000','2019-02-17 12:54:49','2020-02-17','17','07','February','2019','1 Month Package for P1,000'),
 (30,'dwa','w','asd','1000','2019-02-17 12:56:31','2020-02-17','17','07','February','2019','1 Month Package for P1,000'),
-(31,'asd','as','asd','1000','2019-02-17 13:33:46','2020-02-17','17','07','February','2019','1 Month Package for P1,000');
+(31,'asd','as','asd','1000','2019-02-17 13:33:46','2020-02-17','17','07','February','2019','1 Month Package for P1,000'),
+(32,'v','c','a','1000','2019-02-19 20:35:29','2020-02-19','19','08','February','2019','1 Month Package for P1,000'),
+(33,'b','f','a','1000','2019-02-19 20:36:02','2020-02-19','19','08','February','2019','1 Month Package for P1,000'),
+(34,'B','C','A','1000','2019-02-19 20:38:16','2020-02-19','19','08','February','2019','1 Month Package for P1,000'),
+(35,'e','1','a','1000','2019-02-20 20:54:00','2020-02-20','20','08','February','2019','1 Month Package for P1,000'),
+(36,'f','a','awwd','1000','2019-02-20 21:27:09','2020-02-20','20','08','February','2019','1 Month Package for P1,000');
+
+/*Table structure for table `member_time_in_logs` */
+
+DROP TABLE IF EXISTS `member_time_in_logs`;
+
+CREATE TABLE `member_time_in_logs` (
+  `member_time_in_logs_id` int(255) NOT NULL AUTO_INCREMENT,
+  `member_id` varchar(255) DEFAULT NULL,
+  `member_firstname` varchar(255) DEFAULT NULL,
+  `member_middlename` varchar(255) DEFAULT NULL,
+  `member_lastname` varchar(255) DEFAULT NULL,
+  `member_time` varchar(255) DEFAULT NULL,
+  `member_timein` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT '1',
+  `member_timeout` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT '0',
+  `isDeleted` varchar(255) DEFAULT '0',
+  PRIMARY KEY (`member_time_in_logs_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+/*Data for the table `member_time_in_logs` */
+
+insert  into `member_time_in_logs`(`member_time_in_logs_id`,`member_id`,`member_firstname`,`member_middlename`,`member_lastname`,`member_time`,`member_timein`,`member_timeout`,`isDeleted`) values 
+(1,NULL,'f','a','awwd','2019-02-20 21:45:00','1','0','0');
 
 /*Table structure for table `sales` */
 
@@ -400,7 +447,33 @@ insert  into `sales`(`mem_full`,`mem_package`,`mem_amount`,`mem_date`,`mem_expir
 (' asdasd asdasd asdasd ','1 Month Package for P1,000','1000','2019-02-16 21:17:22','2020-02-16'),
 (' Juan Miguelssss aaa Cortez ','1 Month Package for P1,000','1000','2019-02-17 12:54:49','2020-02-17'),
 (' dwa w asd ','1 Month Package for P1,000','1000','2019-02-17 12:56:31','2020-02-17'),
-(' asd as asd ','1 Month Package for P1,000','1000','2019-02-17 13:33:46','2020-02-17');
+(' asd as asd ','1 Month Package for P1,000','1000','2019-02-17 13:33:46','2020-02-17'),
+(' v c a ','1 Month Package for P1,000','1000','2019-02-19 20:35:29','2020-02-19'),
+(' b f a ','1 Month Package for P1,000','1000','2019-02-19 20:36:02','2020-02-19'),
+(' B C A ','1 Month Package for P1,000','1000','2019-02-19 20:38:16','2020-02-19'),
+(' e 1 a ','1 Month Package for P1,000','1000','2019-02-20 20:54:00','2020-02-20'),
+(' f a awwd ','1 Month Package for P1,000','1000','2019-02-20 21:27:09','2020-02-20');
+
+/*Table structure for table `time_logs` */
+
+DROP TABLE IF EXISTS `time_logs`;
+
+CREATE TABLE `time_logs` (
+  `time_id` int(255) NOT NULL AUTO_INCREMENT,
+  `member_firstname` varchar(255) DEFAULT NULL,
+  `member_middlename` varchar(255) DEFAULT NULL,
+  `member_lastname` varchar(255) DEFAULT NULL,
+  `time_log` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`time_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+/*Data for the table `time_logs` */
+
+insert  into `time_logs`(`time_id`,`member_firstname`,`member_middlename`,`member_lastname`,`time_log`) values 
+(1,'f','a','awwd','2019-02-20 21:44:13'),
+(2,'f','a','awwd','2019-02-20 21:44:14'),
+(3,'f','a','awwd','2019-02-20 21:44:42'),
+(4,'f','a','awwd','2019-02-20 21:45:00');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

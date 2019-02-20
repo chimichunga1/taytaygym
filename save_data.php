@@ -44,7 +44,7 @@ if(isset($_POST['login']))
     $date_ph = date('F j, Y g:i:a  ');
     $_SESSION['session_username'] = $search['acc_username'];
 
-    echo $logs_firstname;
+  
 
 	$logs_remarks = ' LOGGED IN ';
   
@@ -452,7 +452,12 @@ $insert_sales_new = "INSERT INTO member_sales_new (`member_firstname`,`member_mi
 
 
 
-        
+	$insert_member_log = "INSERT INTO member_time_in_logs (`member_firstname`,`member_middlename`,`member_lastname`,`member_time`) VALUES ('".$firstname."','".$middlename."','".$lastname."','".$date_ph."') ";
+	$run_insert_member_log = mysqli_query($connect,$insert_member_log);
+
+ 	$time_log = "INSERT INTO time_logs (`member_firstname`,`member_middlename`,`member_lastname`,`time_log`) VALUES ('".$firstname."','".$middlename."','".$lastname."','".$date_ph."') ";
+	$run_time_log = mysqli_query($connect,$time_log);
+       
         
         $select_id = "SELECT * FROM member WHERE member_code ='$membership_code'";
         $run_select_id = mysqli_query($connect,$select_id);
@@ -1128,5 +1133,156 @@ $year = date('Y');
 
 
 }
+
+
+
+
+if(isset($_POST['customer_upgrade'])){
+
+$cust_daily_id = $_POST['cust_daily_id'];
+$membership_code = $_POST['membership_code'];
+
+$targetweight = $_POST['targetweight'];
+$gender = $_POST['gender'];
+$membership = $_POST['membership'];
+$today = date("Y-m-d H:i:s");
+$annual_expire = date ("Y-m-d", strtotime ($today ."+1 year"));
+
+
+if($membership == 'promo1'){
+		$membership ='1';
+		$amount = '1000';
+$memberDays = date ("Y-m-d", strtotime ($today ."+1 month"));
+
+}elseif ($membership == 'promo2') {
+
+$memberDays = date ("Y-m-d", strtotime ($today ."+3 months"));
+		$membership ='2';
+		$amount = '2500';
+
+}elseif ($membership == 'promo3') {
+$memberDays = date ("Y-m-d", strtotime ($today ."+6 months"));
+		$membership ='3';
+		$amount = '4500';
+}
+elseif ($membership == 'promo4') {
+$memberDays = date ("Y-m-d", strtotime ($today ."+1 year"));
+		$membership ='4';
+		$amount = '8500';
+}else{
+
+	$get_promo = "SELECT * FROM member_promo WHERE isDeleted = '0' AND promo_id='$membership'";
+    $get_promo_id = mysqli_query($connect,$get_promo);
+
+        while($row = mysqli_fetch_array($get_promo_id))
+
+    {
+    	$memberDays = $row['promo_duration'];
+    	$amount = $row['promo_amount'];
+    }
+
+
+}
+
+
+
+
+	$get_customer = "SELECT * FROM customer_daily WHERE isDeleted = '0' AND isMember = '0' AND cust_daily_id = '$cust_daily_id'";
+    $get_customer_id = mysqli_query($connect,$get_customer);
+
+        while($row = mysqli_fetch_array($get_customer_id))
+
+    {
+
+$cust_firstname = $row['cust_firstname'];
+$cust_middlename = $row['cust_middlename'];
+$cust_lastname = $row['cust_lastname'];
+$cust_contact_no = $row['cust_contact_no'];
+$cust_address = $row['cust_address'];
+$cust_birthday = $row['cust_birthday'];
+$cust_age = $row['cust_age'];
+$cust_height = $row['cust_height'];
+$cust_weight = $row['cust_weight'];
+$cust_medical_history = $row['cust_medical_history'];
+
+
+
+    }
+
+	$update = "UPDATE customer_daily SET isMember='1' WHERE cust_daily_id='$cust_daily_id'";
+    $update_id = mysqli_query($connect,$update);
+
+
+
+$day = date('d');
+$week = date('W');
+$month = date('F');
+$year = date('Y');
+
+
+
+		$insert_user = "INSERT INTO member (`member_code`,`member_firstname`,`member_middlename`,`member_lastname`,`member_birthdate`,`member_address`,`member_gender`,`member_contact`,`member_height`,`member_weight`,`member_targetweight`,`member_medicalhistory`,`member_sub_id`,`member_age`,`membership_registered`,`membership_expired`,`annual_expire`,`day`,`week`,`month`,`year`,`isPaid`,`isDeleted`,`isExpired`,`amount`) VALUES ('".$membership_code."','".$cust_firstname."','".$cust_middlename."','".$cust_lastname."','".$cust_birthday."','".$cust_address."','".$gender."','".$cust_contact_no."','".$cust_height."','".$cust_weight."','".$targetweight."','".$cust_medical_history."','".$membership."','".$cust_age."','".$today."','".$memberDays."','".$annual_expire."','".$day."','".$week."','".$month."','".$year."','1','0','0','$amount') ";
+			$run_insert_user = mysqli_query($connect,$insert_user);
+
+
+
+	echo '<script language="javascript">';
+	echo 'alert("Process Saved!")';
+	echo '</script>';
+	echo"<script>window.location.href='daily_customers.php';</script>";	
+
+	
+}
+
+
+
+
+
+if(isset($_POST['member_timeout_logs'])){
+$get_firstname = $_POST['get_firstname'];
+$get_middlename = $_POST['get_middlename'];
+$get_lastname = $_POST['get_lastname'];
+
+
+$get_timeout = $_POST['get_timeout'];
+$today = date("Y-m-d H:i:s");
+	$update = "UPDATE member_time_in_logs SET member_timein='0',member_timeout='1',member_time='$today' WHERE member_time_in_logs_id='$get_timeout'";
+    $update_id = mysqli_query($connect,$update);
+
+
+ 	$time_log = "INSERT INTO time_logs (`member_firstname`,`member_middlename`,`member_lastname`,`time_log`) VALUES ('".$get_firstname."','".$get_middlename."','".$get_lastname."','".$today."') ";
+	$run_time_log = mysqli_query($connect,$time_log);
+
+	echo '<script language="javascript">';
+	echo 'alert("Process Saved!")';
+	echo '</script>';
+	echo"<script>window.location.href='members_time_in.php';</script>";	
+
+}
+
+
+if(isset($_POST['member_timein_logs'])){
+$get_firstname = $_POST['get_firstname'];
+$get_middlename = $_POST['get_middlename'];
+$get_lastname = $_POST['get_lastname'];
+
+
+$get_timein = $_POST['get_timein'];
+$today = date("Y-m-d H:i:s");
+	$update = "UPDATE member_time_in_logs SET member_timein='1',member_timeout='0',member_time='$today' WHERE member_time_in_logs_id='$get_timein'";
+    $update_id = mysqli_query($connect,$update);
+
+
+ 	$time_log = "INSERT INTO time_logs (`member_firstname`,`member_middlename`,`member_lastname`,`time_log`) VALUES ('".$get_firstname."','".$get_middlename."','".$get_lastname."','".$today."') ";
+	$run_time_log = mysqli_query($connect,$time_log);
+
+	echo '<script language="javascript">';
+	echo 'alert("Process Saved!")';
+	echo '</script>';
+	echo"<script>window.location.href='members_time_out.php';</script>";	
+
+}
+
+
 
 ?>

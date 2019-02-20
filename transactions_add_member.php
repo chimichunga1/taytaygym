@@ -82,13 +82,13 @@ include("navbar.php");
               <div class="box-body">
 <br><br>
             <form method="POST" action="save_data.php">
+          <?php $random_num = mt_rand(00000001, 99999999); ?>
 
 <div class="row">
                   <label for="membershipCode"></label>
                   <input type="hidden" class="form-control" id="membershipCode" value="<?php echo $random_num; ?>" name="membership_code" readonly> 
       <div class="col-md-3">
-                    <?php $random_num = mt_rand(00000001, 99999999); ?>
-
+          
                        <div class="form-group">
                         <label for="exampleInputLastName">Last Name</label>
                         <input type="text" class="form-control" id="exampleInputLastName" placeholder="Enter Last Name" name="lastname" required>
@@ -152,7 +152,7 @@ include("navbar.php");
 
     <div class="col-md-2">
 
-                      <div class="form-group">
+        <div class="form-group">
                       <label for="weight">Weight</label>
                       <input type="number" class="form-control" id="weight" placeholder="Enter Weight" name="weight" min="1" max="500" required>
                     </div>
@@ -205,14 +205,20 @@ $table2 = "SELECT * FROM member_promo WHERE isDeleted = '0'";
 
 
 
-<div class="col-md-6">
+<div class="col-md-4">
                   <div class="form-group">
                   <label for="medicalhistory">Medical History</label>
                   <input type="text" class="form-control" id="medicalhistory" placeholder="Medical History" name="medicalhistory" required>
                 </div>
 </div>
 
+    <div class="col-md-2">
 
+        <div class="form-group">
+                      <label for="weight">Target Weight</label>
+                      <input type="number" class="form-control" id="weight" placeholder="Enter Weight" name="targetweight" min="1" max="500" required>
+                    </div>
+    </div>
 </div>
 
 

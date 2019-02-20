@@ -61,11 +61,18 @@ if($_SESSION["accessright"] == '1')
           </ul>
         </li> 
          <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" style="color: black; font-size: 20px;"><b>Membership </b><span class="caret"></span></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" style="color: black; font-size: 20px;"><b>Members </b><span class="caret"></span></a>
           <ul class="dropdown-menu">
       <!--     <li><a href="member.php">Enrolled</a></li> -->
         <!--  <li><a href="member_cancelled.php">Cancelled</a></li> -->
+
+          <li><a href="members_time_in.php">Time In</a></li>
+          <li><a href="members_time_out.php">Time Out</a></li>
+          <li><a href="time_logs.php">Member Logs</a></li>
           <li><a href="member_expired.php">Expired</a></li>
+
+
+
 <!--             <li><a href="#">Another action</a></li>
             <li><a href="#">Something else here</a></li>
             <li role="separator" class="divider"></li>
@@ -79,6 +86,8 @@ if($_SESSION["accessright"] == '1')
           <ul class="dropdown-menu">
       <!--     <li><a href="member.php">Enrolled</a></li> -->
         <!--  <li><a href="member_cancelled.php">Cancelled</a></li> -->
+
+          <li><a href="daily_customers.php">Daily Customers</a></li>        
           <li><a href="daily_time_in.php">Time In</a></li>
           <li><a href="daily_time_out.php">Time Out</a></li>
 
