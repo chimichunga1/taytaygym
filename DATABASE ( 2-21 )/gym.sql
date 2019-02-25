@@ -48,6 +48,30 @@ insert  into `account`(`acc_id`,`acc_firstname`,`acc_middlename`,`acc_lastname`,
 (8,'B','C','A','EEE','maspogi','2','0','0','02/16/2019 10:44 PM','1'),
 (9,'TEST','TEST','TEST','TEST','tester','1','0','0','02/17/2019 11:11 AM','1');
 
+/*Table structure for table `annual_sales` */
+
+DROP TABLE IF EXISTS `annual_sales`;
+
+CREATE TABLE `annual_sales` (
+  `annual_sales_id` int(255) NOT NULL AUTO_INCREMENT,
+  `member_id` varchar(255) DEFAULT NULL,
+  `date_renewed` varchar(255) DEFAULT NULL,
+  `date_expired` varchar(255) DEFAULT NULL,
+  `annual_amount` varchar(255) DEFAULT '500',
+  `isExpired` varchar(255) DEFAULT '0',
+  `day` varchar(255) DEFAULT NULL,
+  `week` varchar(255) DEFAULT NULL,
+  `month` varchar(255) DEFAULT NULL,
+  `year` varchar(255) DEFAULT NULL,
+  `isDeleted` varchar(255) DEFAULT '0',
+  PRIMARY KEY (`annual_sales_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+/*Data for the table `annual_sales` */
+
+insert  into `annual_sales`(`annual_sales_id`,`member_id`,`date_renewed`,`date_expired`,`annual_amount`,`isExpired`,`day`,`week`,`month`,`year`,`isDeleted`) values 
+(1,'11','2019-02-25 02:46:34','2020-02-25','500','0','25','08','02','2019','0');
+
 /*Table structure for table `customer_daily` */
 
 DROP TABLE IF EXISTS `customer_daily`;

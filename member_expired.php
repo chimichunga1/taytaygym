@@ -74,6 +74,8 @@ include("navbar.php");
                   <th>Full Name</th>
                   <th>Date Expired</th>
                   <th>Annual Expired</th>
+                  <th>Remarks</th>
+
                   <th>Actions</th>
                 </tr>
                 </thead>
@@ -88,7 +90,7 @@ $username_check = $_SESSION["username"];
 
 
 
-$table2 = "SELECT member.member_id,member.member_code,member.member_firstname,member.member_middlename,member.member_lastname,member.member_birthdate,member.member_address,member.member_gender,member.member_contact,member.member_height,member.member_weight,member.member_targetweight,member.member_medicalhistory,member.member_sub_id,member.member_age,member.membership_registered,member.membership_expired,member_expired.date_expired,member.annual_expire
+$table2 = "SELECT member.isAnnualExpired,member.member_id,member.member_code,member.member_firstname,member.member_middlename,member.member_lastname,member.member_birthdate,member.member_address,member.member_gender,member.member_contact,member.member_height,member.member_weight,member.member_targetweight,member.member_medicalhistory,member.member_sub_id,member.member_age,member.membership_registered,member.membership_expired,member_expired.date_expired,member.annual_expire
 FROM member
 RIGHT JOIN member_expired ON member.member_id=member_expired.member_id WHERE member.isDeleted = '0' and member.isExpired= '1' AND member.isCancelled = '0'";
         
@@ -110,17 +112,80 @@ RIGHT JOIN member_expired ON member.member_id=member_expired.member_id WHERE mem
                   <td><?php echo $row['member_lastname'].', '.$row['member_firstname'].' '.$row['member_middlename'];?> </td>
                   <td><?php echo $row['membership_registered']; ?></td>
                   <td><?php echo $row['annual_expire']; ?></td>
+               <td>
+                <?php 
 
+
+
+                if($row['isAnnualExpired'] == '1'){
+                  echo "Annual Membership Expired";
+                }else{
+                  echo"Membership Expired";
+                }
+
+
+
+
+                ?>
+                  
+
+
+                </td>
                
 
 <?php   
 $user_viewmodal="user_viewmodal".$row['member_id'];
 $user_editmodal="user_editmodal".$row['member_id'];
 $user_delmodal="user_delmodal".$row['member_id'];
+$user_annualmodal="user_annualmodal".$row['member_id'];
     echo '
 
-<td><button class="btn btn-primary"  data-toggle="modal" data-target="#'.$user_viewmodal.'"><i class="fa fa-eye"></i></button>&nbsp;<button class="btn btn-success"  data-toggle="modal" data-target="#'.$user_editmodal.'"><i class="fa fa-check"></i></button>&nbsp;</td>
+<td><button class="btn btn-primary"  data-toggle="modal" data-target="#'.$user_viewmodal.'"><i class="fa fa-eye"></i></button>&nbsp;
    ';
+
+
+                if($row['isAnnualExpired'] == '1'){
+                  echo '<button class="btn btn-success"  data-toggle="modal" data-target="#'.$user_annualmodal.'"><i class="fa fa-check"></i></button>&nbsp;';
+                }else{
+                  echo'<button class="btn btn-success"  data-toggle="modal" data-target="#'.$user_editmodal.'"><i class="fa fa-check"></i></button>&nbsp;';
+                }
+
+echo'</td>';
+
+
+echo
+"
+    
+    <!-- Modal HTML -->
+    <div id='".$user_annualmodal."' class='modal fade'>
+        <div class='modal-dialog'>
+            <div class='modal-content'>
+                <div class='modal-header'>
+                    <button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>
+                    <h4 class='modal-title'> </h4>
+                </div>
+                <div class='modal-body'>
+                 
+ <form  role='form' action='save_data.php' method='post' >
+    <div class='form-group'>
+
+    <center>Would you like to renew annual membership ?<p> ( Member will be charged with 500 for annual fee ) </p></center>
+      
+    </div>
+                </div>
+                <div class='modal-footer'>
+                <input type='hidden' name='get_userid' value='".$row['member_id']."'>
+                    <button type='submit' name='renew_annual'  class='btn btn-success'>Yes</button>
+                    <button type='button' class='btn btn-danger' data-dismiss='modal'>No</button>
+  </form>
+                </div>
+            </div>
+        </div>
+    </div>
+";
+
+
+
 echo
 "
     
@@ -232,7 +297,7 @@ echo"
                 </div>
                 <div class='modal-footer'>
                     <input type='hidden' name='get_userid' value='".$row['member_id']."'>
-                    <button type='submit' name='member_renew_expired'  class='btn btn-success'>Yes</button>
+                    <button type='submit' name='member_renew_expired'  class='btn btn-success'>Proceed</button>
                     <button type='button' class='btn btn-danger' data-dismiss='modal'>No</button>
   </form>
                 </div>

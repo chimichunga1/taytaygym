@@ -4,21 +4,12 @@ include("connection.php");
 require('fpdf/fpdf.php');
 
 $total_sales = 0;
-$get_userid = $_POST['get_userid'];
-$get_day = $_POST['get_day'];
-$get_month = $_POST['get_month'];
-$get_year = $_POST['get_year'];
+
+$year = $_POST['get_year'];
 
 
-
-
-
-$day = date('d');
-
-$month = date('F');
-$year = date('Y');
-$table2 = "SELECT * FROM member_sales_new WHERE member_sales_new_id = '$get_userid' AND day = '$get_day' AND month = '$get_month' AND year = '$get_year'";
-        
+$table2 = "SELECT * FROM annual_sales WHERE isDeleted='0' AND year = '$year'";
+ 
         
         
         $run_query2b = mysqli_query($connect,$table2);
@@ -26,7 +17,7 @@ $table2 = "SELECT * FROM member_sales_new WHERE member_sales_new_id = '$get_user
             while($row = mysqli_fetch_array($run_query2b))
 
         {
-            $total_sales = $total_sales + $row['amount'];
+            $total_sales = $total_sales + $row['annual_amount'];
             $final_sales = $total_sales;
         }
 
@@ -84,9 +75,8 @@ $pdf->Cell(189 ,10,'',0,1);//end of line
 //billing address
 $pdf->SetFont('Arial','B',12);
 $pdf->Cell(25 ,25,'',0,1);
-
 $pdf->Cell(120 ,5   ,'DATA AS OF : '.date("Y-m-d h:i A"),0,1);//end of line
-
+$pdf->Cell(120 ,5   ,'DATE RANGE : YEAR '.$year);//end of line
 
 
 
@@ -97,7 +87,7 @@ $pdf->Cell(98 ,10,'Amount',1,0,'C');
 $pdf->SetFont('Arial','',12);
 $pdf->Cell(25 ,4,'',0,1);
 
-$table2 = "SELECT * FROM member_sales_new WHERE member_sales_new_id = '$get_userid' AND day = '$get_day' AND month = '$get_month' AND year = '$get_year'";
+$table2 = "SELECT * FROM annual_sales WHERE isDeleted='0' AND month = '$month' AND year = '$year'";
 
 
         
@@ -106,15 +96,37 @@ if (mysqli_num_rows($run_query2b)==0){
 echo '<script language="javascript">';
 echo 'alert("THIS REPORT IS EMPTY!")';
 echo '</script>';
-echo"<script>window.location.href='member_sales.php';</script>";  
+echo"<script>window.location.href='annual_renewal_sales.php';</script>";  
 }
+   
             while($row = mysqli_fetch_array($run_query2b))
 
         {
 
 $pdf->Cell(25 ,6,'',0,1);
-$pdf->Cell(96 ,6,$row['member_lastname'].', '.$row['member_firstname'].' '.$row['member_middlename'],1,0,'C');
-$pdf->Cell(98 ,6,$row['amount'],1,0,'C');
+
+
+
+
+          $member = $row['member_id'];
+          $table2 = "SELECT * FROM member WHERE member_id = '$member' ";
+          $run_query2b = mysqli_query($connect,$table2);
+            while($row_members = mysqli_fetch_array($run_query2b))
+
+        {
+
+
+$pdf->Cell(96 ,6,$row_members['member_lastname'].', '.$row_members['member_firstname'].' '.$row_members['member_middlename'],1,0,'C');
+
+          }
+
+
+
+
+
+
+
+$pdf->Cell(98 ,6,$row['annual_amount'],1,0,'C');
 
 }
 

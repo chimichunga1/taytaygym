@@ -75,7 +75,7 @@ include("navbar.php");
 <div class="container">
 
 
-<h2><B>&nbsp; MEMBERSHIP SALES</B></h2>
+<h2><B>&nbsp; ANNUAL RENEWAL SALES</B></h2>
 <br>
 
 <div class="col-md-12">
@@ -85,7 +85,7 @@ include("navbar.php");
   <br>
               <div class="box-body">
 <br><br>
-            <form method="POST" action="member_sales.php">
+            <form method="POST" action="annual_renewal_sales.php">
 
                   <div class="form-group">
                     <label>Select Week :</label>
@@ -131,7 +131,7 @@ include("navbar.php");
 <br>
 
 </form>
-            <form method="POST" action="member_sales.php">
+            <form method="POST" action="annual_renewal_sales.php">
                   <div class="form-group">
                     <label>Select Month :</label>
                     <select name="month" class="form-control">
@@ -164,7 +164,7 @@ include("navbar.php");
 
 </form>
 
-            <form method="POST" action="member_sales.php">
+            <form method="POST" action="annual_renewal_sales.php">
 
                 <div class="form-group">
                   <label for="year">Enter Year : </label>
@@ -223,8 +223,8 @@ $year = $_POST['year'];
                 <tr>
 
                   <th>Member's Full Name</th>
-                  <th>Membership Package</th>
-                  <th>Amount</th>
+              
+                  <th>Annual Amount</th>
 
                 <th>Date Registered</th>
                 <th>Annual Expire</th>              
@@ -243,7 +243,7 @@ $final_total = 0;
 
 
 
-$table2 = "SELECT * FROM member_sales_new  WHERE week = '$week' AND year = '$year'";
+$table2 = "SELECT * FROM annual_sales   WHERE week = '$week' AND year = '$year'";
         
         
         
@@ -252,7 +252,7 @@ $table2 = "SELECT * FROM member_sales_new  WHERE week = '$week' AND year = '$yea
             while($row = mysqli_fetch_array($run_query2b))
 
         {
-$final_total = $final_total + (int)$row['amount'];
+$final_total = $final_total + (int)$row['annual_amount'];
 $final_amount = $final_total;
 ?>
 
@@ -261,27 +261,39 @@ $final_amount = $final_total;
 
                 <tr>
                
-                  <td><?php echo $row['member_lastname'].', '.$row['member_firstname'].' '.$row['member_middlename'];?> </td>
-                  <td>
-
-          <?php
-
-
-    echo $row['member_package'];
+                                    <td>
 
 
 
-           ?>
-                    
+
+                    <?php
+
+          $member = $row['member_id'];
+          $table2 = "SELECT * FROM member WHERE member_id = '$member' ";
+          $run_query2b = mysqli_query($connect,$table2);
+            while($row_members = mysqli_fetch_array($run_query2b))
+
+        {
+                     echo $row_members['member_lastname'].', '.$row_members['member_firstname'].' '.$row_members['member_middlename'];
+
+          }
+
+                     ?> 
+
+
+
+
+
 
 
                   </td>
-                  <td><?php echo (int)$row['amount']+(int)$row['annual_amount'];?></td>
-                  <td><?php echo $row['date_registered'];?></td>
-                  <td><?php echo $row['annual_expired'];?></td>
+  
+                  <td><?php echo $row['annual_amount'];?></td>
+                  <td><?php echo $row['date_renewed'];?></td>
+                  <td><?php echo $row['date_expired'];?></td>
 <?php   
-$user_viewmodal="user_viewmodal".$row['member_sales_new_id'];
-$user_printmodal="user_printmodal".$row['member_sales_new_id'];
+$user_viewmodal="user_viewmodal".$row['annual_sales_id'];
+$user_printmodal="user_printmodal".$row['annual_sales_id'];
 
     echo '
 
@@ -395,7 +407,7 @@ echo
 
 
 
-                <input type='hidden' name='get_userid' value='".$row['member_sales_new_id']."'>
+                <input type='hidden' name='get_userid' value='".$row['annual_sales_id']."'>
                     <button type='submit' name='member_cancel'  class='btn btn-success'>Yes</button>
                     <button type='button' class='btn btn-danger' data-dismiss='modal'>No</button>
   </form>
@@ -451,7 +463,7 @@ $year = date("Y");
 <h4>ANNUAL SALES OF THIS YEAR <?php echo $year; ?> : 
 <?php 
 $total_annual_initial = 0;
-$table2 = "SELECT * FROM member_sales_new WHERE year = '$year'";
+$table2 = "SELECT * FROM annual_sales  WHERE year = '$year'";
         
         
         
@@ -459,7 +471,7 @@ $table2 = "SELECT * FROM member_sales_new WHERE year = '$year'";
 
             while($row = mysqli_fetch_array($run_query2b))
         {
-          $total_annual_initial = $total_annual_initial + (int)$row['amount'];
+          $total_annual_initial = $total_annual_initial + (int)$row['annual_amount'];
           $total_annual = $total_annual_initial;
         }
         echo $total_annual;
@@ -484,8 +496,8 @@ $year = $_POST['year'];
                 <thead>
                 <tr>            
                   <th>Member's Full Name</th>
-                  <th>Membership Package</th>
-                  <th>Amount</th>               
+              
+                  <th>Annual Amount</th>               
                   <th>Date Registered</th>
                   <th>Annual Expired</th>
                                  <th>Action</th>     
@@ -503,7 +515,7 @@ $final_total = 0;
 
 
 
-$table2 = "SELECT * FROM member_sales_new WHERE month = '$month' AND year = '$year'";
+$table2 = "SELECT * FROM annual_sales  WHERE month = '$month' AND year = '$year'";
         
         
         
@@ -513,7 +525,7 @@ $table2 = "SELECT * FROM member_sales_new WHERE month = '$month' AND year = '$ye
 
         {
 
-$final_total = $final_total + (int)$row['amount'];
+$final_total = $final_total + (int)$row['annual_amount'];
 $final_amount = $final_total;
 ?>
 
@@ -521,28 +533,41 @@ $final_amount = $final_total;
 
 
                 <tr>
-                  <td><?php echo $row['member_lastname'].', '.$row['member_firstname'].' '.$row['member_middlename'];?> </td>
-                  <td>
-
-          <?php
-
-echo $row['member_package'];
+                                    <td>
 
 
 
-           ?>
-                    
+
+                    <?php
+
+          $member = $row['member_id'];
+          $table2 = "SELECT * FROM member WHERE member_id = '$member' ";
+          $run_query2b = mysqli_query($connect,$table2);
+            while($row_members = mysqli_fetch_array($run_query2b))
+
+        {
+                     echo $row_members['member_lastname'].', '.$row_members['member_firstname'].' '.$row_members['member_middlename'];
+
+          }
+
+                     ?> 
+
+
+
+
+
 
 
                   </td>
-                  <td><?php echo (int)$row['amount']+(int)$row['annual_amount'];?></td>
 
-                  <td><?php echo $row['date_registered'];?></td>
-                  <td><?php echo $row['annual_expired'];?></td>
+                  <td><?php echo $row['annual_amount'];?></td>
+
+                  <td><?php echo $row['date_renewed'];?></td>
+                  <td><?php echo $row['date_expired'];?></td>
 
 <?php   
-$user_viewmodal="user_viewmodal".$row['member_sales_new_id'];
-$user_printmodal="user_printmodal".$row['member_sales_new_id'];
+$user_viewmodal="user_viewmodal".$row['annual_sales_id'];
+$user_printmodal="user_printmodal".$row['annual_sales_id'];
 
     echo '
 
@@ -653,7 +678,7 @@ echo
 
 
 
-                <input type='hidden' name='get_userid' value='".$row['member_sales_new_id']."'>
+                <input type='hidden' name='get_userid' value='".$row['annual_sales_id']."'>
                     <button type='submit' name='member_cancel'  class='btn btn-success'>Yes</button>
                     <button type='button' class='btn btn-danger' data-dismiss='modal'>No</button>
   </form>
@@ -708,7 +733,7 @@ $year = date("Y");
 <h4>ANNUAL SALES OF THIS YEAR <?php echo $year; ?> : 
 <?php 
 $total_annual_initial = 0;
-$table2 = "SELECT * FROM member_sales_new WHERE year = '$year'";
+$table2 = "SELECT * FROM annual_sales  WHERE year = '$year'";
         
         
         
@@ -716,7 +741,7 @@ $table2 = "SELECT * FROM member_sales_new WHERE year = '$year'";
 
             while($row = mysqli_fetch_array($run_query2b))
         {
-          $total_annual_initial = $total_annual_initial + (int)$row['amount'];
+          $total_annual_initial = $total_annual_initial + (int)$row['annual_amount'];
           $total_annual = $total_annual_initial;
         }
         echo $total_annual;
@@ -738,8 +763,8 @@ $year = $_POST['year'];
                 <tr>
                      
                   <th>Member's Full Name</th>
-                  <th>Membership Package</th>
-                   <th>Amount</th>                 
+              
+                   <th>Annual Amount</th>                 
                   <th>Date Registered</th>
                   <th>Annual Expire</th>
                  
@@ -756,7 +781,7 @@ $username_check = $_SESSION["username"];
 
 $final_total = 0;
 
-$table2 = "SELECT * FROM member_sales_new WHERE year = '$year'";
+$table2 = "SELECT * FROM annual_sales  WHERE year = '$year'";
         
         
         
@@ -765,7 +790,7 @@ $table2 = "SELECT * FROM member_sales_new WHERE year = '$year'";
             while($row = mysqli_fetch_array($run_query2b))
 
         {
-$final_total = $final_total + (int)$row['amount'];
+$final_total = $final_total + (int)$row['annual_amount'];
 $final_amount = $final_total;
 
 ?>
@@ -775,27 +800,40 @@ $final_amount = $final_total;
 
                 <tr>
  
-                  <td><?php echo $row['member_lastname'].', '.$row['member_firstname'].' '.$row['member_middlename'];?> </td>
-                  <td>
-
-          <?php
-
-echo $row['member_package'];    
+                                    <td>
 
 
 
-           ?>
-                    
+
+                    <?php
+
+          $member = $row['member_id'];
+          $table2 = "SELECT * FROM member WHERE member_id = '$member' ";
+          $run_query2b = mysqli_query($connect,$table2);
+            while($row_members = mysqli_fetch_array($run_query2b))
+
+        {
+                     echo $row_members['member_lastname'].', '.$row_members['member_firstname'].' '.$row_members['member_middlename'];
+
+          }
+
+                     ?> 
+
+
+
+
+
 
 
                   </td>
-                  <td><?php echo (int)$row['amount']+(int)$row['annual_amount'];?></td>
+   
+                  <td><?php echo $row['annual_amount'];?></td>
 
-                  <td><?php echo $row['date_registered'];?></td>
-                  <td><?php echo $row['annual_expired'];?></td>
+                  <td><?php echo $row['date_renewed'];?></td>
+                  <td><?php echo $row['date_expired'];?></td>
 <?php   
-$user_viewmodal="user_viewmodal".$row['member_sales_new_id'];
-$user_printmodal="user_printmodal".$row['member_sales_new_id'];
+$user_viewmodal="user_viewmodal".$row['annual_sales_id'];
+$user_printmodal="user_printmodal".$row['annual_sales_id'];
 
     echo '
 
@@ -909,7 +947,7 @@ echo
 
 
 
-                <input type='hidden' name='get_userid' value='".$row['member_sales_new_id']."'>
+                <input type='hidden' name='get_userid' value='".$row['annual_sales_id']."'>
                     <button type='submit' name='member_cancel'  class='btn btn-success'>Yes</button>
                     <button type='button' class='btn btn-danger' data-dismiss='modal'>No</button>
   </form>
@@ -964,7 +1002,7 @@ $year = date("Y");
 <h4>ANNUAL SALES OF THIS YEAR <?php echo $year; ?> : 
 <?php 
 $total_annual_initial = 0;
-$table2 = "SELECT * FROM member_sales_new WHERE year = '$year'";
+$table2 = "SELECT * FROM annual_sales  WHERE year = '$year'";
         
         
         
@@ -972,7 +1010,7 @@ $table2 = "SELECT * FROM member_sales_new WHERE year = '$year'";
 
             while($row = mysqli_fetch_array($run_query2b))
         {
-          $total_annual_initial = $total_annual_initial + (int)$row['amount'];
+          $total_annual_initial = $total_annual_initial + (int)$row['annual_amount'];
           $total_annual = $total_annual_initial;
         }
         echo $total_annual;
@@ -1002,8 +1040,8 @@ else{
                 <thead>
                 <tr>             
                   <th>Member's Full Name</th>
-                  <th>Membership Package</th>
-                  <th>Amount</th>
+              
+                  <th>Annual Amount</th>
                   <th>Date Registered</th>
                   <th>Annual Expired</th>
                        <th>Action</th>     
@@ -1021,17 +1059,13 @@ $final_total = 0;
 
 
 
-$table2 = "SELECT * FROM member_sales_new";
-        
-        
-        
-        $run_query2b = mysqli_query($connect,$table2);
-
+          $table2 = "SELECT * FROM annual_sales ";
+          $run_query2b = mysqli_query($connect,$table2);
             while($row = mysqli_fetch_array($run_query2b))
 
         {
 
-$final_total = $final_total + (int)$row['amount'];
+$final_total = $final_total + (int)$row['annual_amount'];
 $final_amount = $final_total;
 
 
@@ -1042,19 +1076,40 @@ $final_amount = $final_total;
 
 
                 <tr>
-                  <td><?php echo $row['member_lastname'].', '.$row['member_firstname'].' '.$row['member_middlename'];?> </td>
                   <td>
-                    <?php 
-                      echo $row['member_package'];
-                      ?>
+
+
+
+
+                    <?php
+
+          $member = $row['member_id'];
+          $table2 = "SELECT * FROM member WHERE member_id = '$member' ";
+          $run_query2b = mysqli_query($connect,$table2);
+            while($row_members = mysqli_fetch_array($run_query2b))
+
+        {
+                     echo $row_members['member_lastname'].', '.$row_members['member_firstname'].' '.$row_members['member_middlename'];
+
+          }
+
+                     ?> 
+
+
+
+
+
+
+
                   </td>
-                  <td><?php echo (int)$row['amount']+(int)$row['annual_amount'];?></td>
-                  <td><?php echo $row['date_registered'];?></td>
-                  <td><?php echo $row['annual_expired'];?></td>
+    
+                  <td><?php echo $row['annual_amount'];?></td>
+                  <td><?php echo $row['date_renewed'];?></td>
+                  <td><?php echo $row['date_expired'];?></td>
 
 <?php   
-$user_viewmodal="user_viewmodal".$row['member_sales_new_id'];
-$user_printmodal="user_printmodal".$row['member_sales_new_id'];
+$user_viewmodal="user_viewmodal".$row['annual_sales_id'];
+$user_printmodal="user_printmodal".$row['annual_sales_id'];
 
     echo '
 
@@ -1129,7 +1184,7 @@ echo
                 </div>
                 <div class='modal-body'>
                  
- <form  role='form' action='member_print.php' method='post' >
+ <form  role='form' action='annual_print.php' method='post' >
     <div class='form-group'>
 <center><h3>Would you like to print an invoice ? </</center>
       
@@ -1141,34 +1196,13 @@ echo
 
 
 
-
-
-
-
-
-
-
-
-
                 <input type='hidden' name='get_day' value='".$row['day']."'>
                   <input type='hidden' name='get_month' value='".$row['month']."'>                   
                  <input type='hidden' name='get_year' value='".$row['year']."'>     
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-                <input type='hidden' name='get_userid' value='".$row['member_sales_new_id']."'>
+                <input type='hidden' name='get_userid' value='".$row['annual_sales_id']."'>
                     <button type='submit' name='member_print_invoice'  class='btn btn-success'>Yes</button>
                     <button type='button' class='btn btn-danger' data-dismiss='modal'>No</button>
   </form>
@@ -1191,12 +1225,12 @@ echo
 
 </div>
 <div class="col-md-12">
-  <form action="print_member_today.php" method="POST">
+  <form action="print_annual_today.php" method="POST">
 
 
 
 
-<button type="submit" name="print_invoice" class="btn btn-success col-md-3"><i class="fa fa-print"></i> Print Today's Member Sales</button>
+<button type="submit" name="print_invoice" class="btn btn-success col-md-3"><i class="fa fa-print"></i> Print Today's Annual Renewal Sales</button>
 
 </form><br>
   </div>
@@ -1220,7 +1254,7 @@ $year = date("Y");
 <h4>ANNUAL SALES OF THIS YEAR <?php echo $year; ?> : 
 <?php 
 $total_annual_initial = 0;
-$table2 = "SELECT * FROM member_sales_new";
+$table2 = "SELECT * FROM annual_sales ";
         
         
         
@@ -1228,7 +1262,7 @@ $table2 = "SELECT * FROM member_sales_new";
 
             while($row = mysqli_fetch_array($run_query2b))
         {
-          $total_annual_initial = $total_annual_initial + (int)$row['amount'];
+          $total_annual_initial = $total_annual_initial + (int)$row['annual_amount'];
           $total_annual = $total_annual_initial;
         }
 

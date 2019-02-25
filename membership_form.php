@@ -4,20 +4,9 @@ include("connection.php");
 require('fpdf/fpdf.php');
 
 $total_sales = 0;
-$get_userid = $_POST['get_userid'];
-$get_day = $_POST['get_day'];
-$get_month = $_POST['get_month'];
-$get_year = $_POST['get_year'];
+$get_memberid = $_POST['get_memberid'];
 
-
-
-
-
-$day = date('d');
-
-$month = date('F');
-$year = date('Y');
-$table2 = "SELECT * FROM member_sales_new WHERE member_sales_new_id = '$get_userid' AND day = '$get_day' AND month = '$get_month' AND year = '$get_year'";
+$table2 = "SELECT * FROM member WHERE member_id = '$get_memberid'";
         
         
         
@@ -26,8 +15,32 @@ $table2 = "SELECT * FROM member_sales_new WHERE member_sales_new_id = '$get_user
             while($row = mysqli_fetch_array($run_query2b))
 
         {
-            $total_sales = $total_sales + $row['amount'];
+            $total_sales = $total_sales + $row['annual_amount'];
             $final_sales = $total_sales;
+            $member_image = $row['member_image'];
+
+            $get_filetype=explode('.',$member_image);
+            $filetype=$get_filetype[1];
+
+$member_firstname = $row['member_firstname'];
+$member_middlename = $row['member_middlename'];
+$member_lastname = $row['member_lastname'];
+$member_birthdate = $row['member_birthdate'];
+$member_address = $row['member_address'];
+$member_gender = $row['member_gender'];
+$member_contact = $row['member_contact'];
+$member_height = $row['member_height'];
+$member_weight = $row['member_weight'];
+$member_targetweight = $row['member_targetweight'];
+$member_medicalhistory = $row['member_medicalhistory'];
+$member_package = $row['member_package'];
+$member_age = $row['member_age'];
+$membership_registered = $row['membership_registered'];
+$membership_expired = $row['membership_expired'];
+$annual_expire = $row['annual_expire'];
+
+
+
         }
 
 if(!isset($final_sales)){
@@ -56,6 +69,8 @@ $pdf->AddPage();
 //set font to arial, bold, 14pt
 $pdf->SetFont('Arial','B',14);
 //Cell(width , height , text , border , end line , [align] )
+
+
 $pdf->Image('banner2.jpg',150,10,50,0,'JPG');
 
 $pdf->Cell(178 ,15,'POUND FOR POUND FITNESS',0,0,'C');
@@ -83,58 +98,53 @@ $pdf->Cell(25 ,5,'Customer ID : ',0,0);*/
 $pdf->Cell(189 ,10,'',0,1);//end of line
 //billing address
 $pdf->SetFont('Arial','B',12);
-$pdf->Cell(25 ,25,'',0,1);
+$pdf->Cell(25 ,5,'',0,1);
 
-$pdf->Cell(120 ,5   ,'DATA AS OF : '.date("Y-m-d h:i A"),0,1);//end of line
+$pdf->Cell(120 ,10   ,'DATA AS OF : '.date("Y-m-d h:i A"),0,1);//end of line
+$pdf->SetFont('Arial','B',24);
 
+$pdf->Cell(195 ,10,'MEMBERSHIP FORM ',0,0,'C');
 
-
-
-$pdf->SetFont('Arial','B',15);
+$pdf->SetFont('Arial','B',12);
 $pdf->Cell(25 ,10,'',0,1);
-$pdf->Cell(96 ,10,'Full Name ',1,0,'C');
-$pdf->Cell(98 ,10,'Amount',1,0,'C');
-$pdf->SetFont('Arial','',12);
-$pdf->Cell(25 ,4,'',0,1);
-
-$table2 = "SELECT * FROM member_sales_new WHERE member_sales_new_id = '$get_userid' AND day = '$get_day' AND month = '$get_month' AND year = '$get_year'";
 
 
-        
-        $run_query2b = mysqli_query($connect,$table2);
-if (mysqli_num_rows($run_query2b)==0){
-echo '<script language="javascript">';
-echo 'alert("THIS REPORT IS EMPTY!")';
-echo '</script>';
-echo"<script>window.location.href='member_sales.php';</script>";  
-}
-            while($row = mysqli_fetch_array($run_query2b))
+$pdf->Image($member_image,160,40,30,0,$filetype);
 
-        {
-
-$pdf->Cell(25 ,6,'',0,1);
-$pdf->Cell(96 ,6,$row['member_lastname'].', '.$row['member_firstname'].' '.$row['member_middlename'],1,0,'C');
-$pdf->Cell(98 ,6,$row['amount'],1,0,'C');
-
-}
-
-$pdf->Cell(25 ,3,'',0,1);
-
-
-
-
-
-
-
-
-$pdf->SetFont('Arial','B',15);
+$pdf->SetFont('Arial','B',12);
 $pdf->Cell(25 ,10,'',0,1);
-$pdf->Cell(54 ,10,'',0,0,'C');
-$pdf->Cell(54 ,10,'',0,0,'C');
-$pdf->Cell(54 ,10,'Total Sales : ',0,0,'C');
-$pdf->Cell(30 ,10,"P".$final_sales.".00",0,0,'C');
-$pdf->Cell(25 ,3,'',0,1);
-$pdf->SetFont('Arial','',12);
+$pdf->Cell(26 ,10,'Full Name :',1,0,'C');
+$pdf->Cell(70 ,10,$member_lastname.', '.$member_firstname.' '.$member_middlename,1,0,'C');
+$pdf->Cell(26 ,10,'Contact :',1,0,'C');
+$pdf->Cell(30 ,10,$member_contact,1,0,'C');
+$pdf->Cell(20 ,10,'Gender :',1,0,'C');
+$pdf->Cell(22 ,10,$member_gender,1,0,'C');
+
+$pdf->Cell(25 ,10,'',0,1);
+$pdf->Cell(48 ,10,'Membership Package :',1,0,'C');
+$pdf->Cell(70 ,10,$member_package,1,0,'C');
+$pdf->Cell(30 ,10,'Address :',1,0,'C');
+$pdf->Cell(46 ,10,$member_address,1,0,'C');
+$pdf->Cell(25 ,10,'',0,1);
+$pdf->Cell(22 ,10,'Height :',1,0,'C');
+$pdf->Cell(22 ,10,$member_height,1,0,'C');
+$pdf->Cell(22 ,10,'Weight :',1,0,'C');
+$pdf->Cell(22 ,10,$member_weight,1,0,'C');
+$pdf->Cell(32 ,10,'Target Weight :',1,0,'C');
+$pdf->Cell(22 ,10,$member_targetweight,1,0,'C');
+$pdf->Cell(32 ,10,'Age :',1,0,'C');
+$pdf->Cell(20 ,10,$member_age,1,0,'C');
+$pdf->Cell(25 ,10,'',0,1);
+$pdf->Cell(38 ,10,'Date Registered :',1,0,'C');
+$pdf->Cell(28 ,10,substr($membership_registered, 0, 10),1,0,'C');
+$pdf->Cell(32 ,10,'Date Expired :',1,0,'C');
+$pdf->Cell(28 ,10,$membership_expired,1,0,'C');
+$pdf->Cell(36 ,10,'Annual Expired :',1,0,'C');
+$pdf->Cell(32 ,10,$annual_expire,1,0,'C');
+$pdf->Cell(25 ,10,'',0,1);
+$pdf->Cell(36 ,10,'Medical History :',1,0,'C');
+$pdf->Cell(158 ,10,$member_medicalhistory,1,0,'');
+
 
 
 

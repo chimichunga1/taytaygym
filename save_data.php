@@ -296,6 +296,8 @@ else
 
 if(isset($_POST['add_members'])){
 
+
+
 date_default_timezone_set('Asia/Manila');
 
 
@@ -323,6 +325,24 @@ $weight = $_POST['weight'];
 $targetweight = $_POST['targetweight'];
 $medicalhistory = $_POST['medicalhistory'];
 $membership = $_POST['membership'];
+
+if((int)$weight < (int)$targetweight){
+
+
+echo '<script language="javascript">';
+echo 'alert("Target Weight must be last than your current Weight!")';
+echo '</script>';
+echo"<script>window.location.href='transactions_add_member.php';</script>";	
+
+}
+
+
+
+
+
+
+
+
 /*$age = $_POST['age'];*/
 $today = date("Y-m-d H:i:s");
 
@@ -345,6 +365,13 @@ $birthDate = $explodeBirthdate[1]."/".$explodeBirthdate[2]."/".$explodeBirthdate
 
 
 $annual_expire = date ("Y-m-d", strtotime ($today ."+1 year"));
+
+$tendays_expire_month = date ("Y-m-d", strtotime ($today ."+11 months"));
+
+
+$tendays_expire_final = date ("Y-m-d", strtotime ($tendays_expire_month ."+24 days"));
+
+
 
 if($membership == 'promo1'){
 		$membership ='1';
@@ -389,25 +416,33 @@ $week = date('W');
 $month = date('F');
 $year = date('Y');
 
-$timestamp = date("Y-m-d H:i:s");
+
 $name=' '.$firstname.' '.$middlename.' '.$lastname.' ';
+
+
+
+$file = $_FILES['member_image']['name'];
+
+$get_filetype=explode('.',$file);
+$filetype=$get_filetype[1];
+
+ date_default_timezone_set('Asia/Manila');
+ $date_image = date('mdYhis', time());
+ $rand=rand(10000,99999);
+ $encname=$date_image.$rand;
+ $filename=$rand.$date_image.'.'.$filetype;
+
+ $filepath="assets/members/".$filename;
+ move_uploaded_file($_FILES["member_image"]["tmp_name"],$filepath);
+
+
+
+
+
 
 
         $select_id = "SELECT * FROM member WHERE member_firstname='$firstname' AND member_middlename='$middlename' AND member_lastname='$lastname' AND isDeleted='0'";
         $run_select_id = mysqli_query($connect,$select_id);
-
-
-if (mysqli_num_rows($run_select_id) > 0){
-			echo '<script language="javascript">';
-			echo 'alert("USERNAME IS ALREADY TAKEN!")';
-			echo '</script>';
-			echo"<script>window.location.href='transactions_add_member.php';</script>";	
-
-}else{
-
-		$insert_user = "INSERT INTO member (`member_code`,`member_firstname`,`member_middlename`,`member_lastname`,`member_birthdate`,`member_address`,`member_gender`,`member_contact`,`member_height`,`member_weight`,`member_targetweight`,`member_medicalhistory`,`member_sub_id`,`member_age`,`membership_registered`,`membership_expired`,`annual_expire`,`day`,`week`,`month`,`year`,`isPaid`,`isDeleted`,`isExpired`,`amount`) VALUES ('".$membership_code."','".$firstname."','".$middlename."','".$lastname."','".$birthday."','".$address."','".$gender."','".$contact."','".$height."','".$weight."','".$targetweight."','".$medicalhistory."','".$membership."','".$age."','".$today."','".$memberDays."','".$annual_expire."','".$day."','".$week."','".$month."','".$year."','1','0','0','$amount') ";
-			$run_insert_user = mysqli_query($connect,$insert_user);
-
 
 $mem=$membership;
 if($mem == '1'){
@@ -426,6 +461,19 @@ else{
    $mem="1 Year Package for P8,500";
 
 }
+
+
+if (mysqli_num_rows($run_select_id) > 0){
+			echo '<script language="javascript">';
+			echo 'alert("USERNAME IS ALREADY TAKEN!")';
+			echo '</script>';
+			echo"<script>window.location.href='transactions_add_member.php';</script>";	
+
+}else{
+
+		$insert_user = "INSERT INTO member (`member_code`,`member_firstname`,`member_middlename`,`member_lastname`,`member_birthdate`,`member_address`,`member_gender`,`member_contact`,`member_height`,`member_weight`,`member_targetweight`,`member_medicalhistory`,`member_sub_id`,`member_age`,`membership_registered`,`membership_expired`,`annual_expire`,`day`,`week`,`month`,`year`,`isPaid`,`isDeleted`,`isExpired`,`amount`,`member_image`,`expireWarningDate`,`member_package`) VALUES ('".$membership_code."','".$firstname."','".$middlename."','".$lastname."','".$birthday."','".$address."','".$gender."','".$contact."','".$height."','".$weight."','".$targetweight."','".$medicalhistory."','".$membership."','".$age."','".$today."','".$memberDays."','".$annual_expire."','".$day."','".$week."','".$month."','".$year."','1','0','0','$amount','".$filepath."','".$tendays_expire_final."','".$mem."') ";
+			$run_insert_user = mysqli_query($connect,$insert_user);
+
 
 
 $insert_sales = "INSERT INTO sales (`mem_full`,`mem_package`,`mem_amount`,`mem_date`,`mem_expired`) VALUES ('".$name."','".$mem."','".$amount."','".$today."','".$annual_expire."') ";
@@ -799,12 +847,11 @@ else{
 
 
 
-
 $annual_expire = date ("Y-m-d", strtotime ($today ."+1 year"));
-$timestamp = date("Y-m-d H:i:s");
 
 
-	$update_member = "UPDATE member SET isExpired = '0',annual_expire='$annual_expire',member_sub_id = '$membership',membership_registered = '$today',membership_expired = '$memberDays',amount='$price',timestamp_date ='$timestamp'  WHERE member_id ='$get_userid'";
+
+	$update_member = "UPDATE member SET isExpired = '0',annual_expire='$annual_expire',member_sub_id = '$membership',membership_registered = '$today',membership_expired = '$memberDays',amount='$price' WHERE member_id ='$get_userid'";
 	$run_update_member = mysqli_query($connect,$update_member);
 
 	$del_member = "DELETE FROM member_expired WHERE member_id = '$get_userid'";
@@ -1221,7 +1268,42 @@ $year = date('Y');
 
 
 
-		$insert_user = "INSERT INTO member (`member_code`,`member_firstname`,`member_middlename`,`member_lastname`,`member_birthdate`,`member_address`,`member_gender`,`member_contact`,`member_height`,`member_weight`,`member_targetweight`,`member_medicalhistory`,`member_sub_id`,`member_age`,`membership_registered`,`membership_expired`,`annual_expire`,`day`,`week`,`month`,`year`,`isPaid`,`isDeleted`,`isExpired`,`amount`) VALUES ('".$membership_code."','".$cust_firstname."','".$cust_middlename."','".$cust_lastname."','".$cust_birthday."','".$cust_address."','".$gender."','".$cust_contact_no."','".$cust_height."','".$cust_weight."','".$targetweight."','".$cust_medical_history."','".$membership."','".$cust_age."','".$today."','".$memberDays."','".$annual_expire."','".$day."','".$week."','".$month."','".$year."','1','0','0','$amount') ";
+
+$file = $_FILES['member_image']['name'];
+
+$get_filetype=explode('.',$file);
+$filetype=$get_filetype[1];
+
+ date_default_timezone_set('Asia/Manila');
+ $date_image = date('mdYhis', time());
+ $rand=rand(10000,99999);
+ $encname=$date_image.$rand;
+ $filename=$rand.$date_image.'.'.$filetype;
+
+ $filepath="assets/members/".$filename;
+ move_uploaded_file($_FILES["member_image"]["tmp_name"],$filepath);
+
+if((int)$cust_weight < (int)$targetweight){
+
+echo '<script language="javascript">';
+echo 'alert("Target Weight must be last than your current Weight!")';
+echo '</script>';
+echo"<script>window.location.href='daily_customers.php';</script>";	
+
+
+
+
+}
+
+$tendays_expire_month = date ("Y-m-d", strtotime ($today ."+11 months"));
+
+
+$tendays_expire_final = date ("Y-m-d", strtotime ($tendays_expire_month ."+24 days"));
+
+
+
+
+		$insert_user = "INSERT INTO member (`member_code`,`member_firstname`,`member_middlename`,`member_lastname`,`member_birthdate`,`member_address`,`member_gender`,`member_contact`,`member_height`,`member_weight`,`member_targetweight`,`member_medicalhistory`,`member_sub_id`,`member_age`,`membership_registered`,`membership_expired`,`annual_expire`,`day`,`week`,`month`,`year`,`isPaid`,`isDeleted`,`isExpired`,`amount`,`member_image`,`expireWarningDate`) VALUES ('".$membership_code."','".$cust_firstname."','".$cust_middlename."','".$cust_lastname."','".$cust_birthday."','".$cust_address."','".$gender."','".$cust_contact_no."','".$cust_height."','".$cust_weight."','".$targetweight."','".$cust_medical_history."','".$membership."','".$cust_age."','".$today."','".$memberDays."','".$annual_expire."','".$day."','".$week."','".$month."','".$year."','1','0','0','$amount','".$filepath."','".$tendays_expire_final."') ";
 			$run_insert_user = mysqli_query($connect,$insert_user);
 
 
@@ -1282,6 +1364,42 @@ $today = date("Y-m-d H:i:s");
 	echo"<script>window.location.href='members_time_out.php';</script>";	
 
 }
+
+
+if(isset($_POST['renew_annual'])){
+
+$get_userid = $_POST['get_userid'];
+$date_registered = date("Y-m-d h:i:s");
+$today = date("Y-m-d");
+$annual_expire = date ("Y-m-d", strtotime ($today ."+1 year"));
+
+
+
+	$update_member = "UPDATE member SET isExpired = '0',isAnnualExpired = '0',annual_expire='$annual_expire' WHERE member_id ='$get_userid'";
+	$run_update_member = mysqli_query($connect,$update_member);
+
+
+
+
+
+$day = date('d');
+$week = date('W');
+$month = date('F');
+$year = date('Y');
+
+
+
+
+ 	$time_log = "INSERT INTO annual_sales (`member_id`,`date_renewed`,`date_expired`,`day`,`week`,`month`,`year`) VALUES ('".$get_userid."','".$date_registered."','".$annual_expire."','".$day."','".$week."','".$month."','".$year."') ";
+	$run_time_log = mysqli_query($connect,$time_log);
+
+
+
+
+
+}
+
+
 
 
 

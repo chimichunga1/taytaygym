@@ -27,7 +27,7 @@ if(empty($_SESSION['check_login'])){
 
 					}
 					if($row['annual_expire'] < date("Y-m-d H:i:s")){
-							$update_mebmership = "UPDATE member SET isExpired = '1' WHERE member_id ='$get_member_id'";
+							$update_mebmership = "UPDATE member SET isExpired = '1',isAnnualExpired = '1' WHERE member_id ='$get_member_id'";
 							$run_update_mebmership = mysqli_query($connect,$update_mebmership);
 
 							$today = date("Y-m-d");

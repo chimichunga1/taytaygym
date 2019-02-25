@@ -103,7 +103,12 @@ $table2 = "SELECT customer_daily.amount,customer_daily.cust_daily_id,customer_da
 
         
         $run_query2b = mysqli_query($connect,$table2);
-
+if (mysqli_num_rows($run_query2b)==0){
+echo '<script language="javascript">';
+echo 'alert("THIS REPORT IS EMPTY!")';
+echo '</script>';
+echo"<script>window.location.href='daily_sales.php';</script>";  
+}
             while($row = mysqli_fetch_array($run_query2b))
 
         {

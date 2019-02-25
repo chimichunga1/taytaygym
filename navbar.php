@@ -36,6 +36,11 @@ if($_SESSION["accessright"] == '1')
           <ul class="dropdown-menu">
           <li><a href="member_sales.php" >Membership Sales</a></li>
           <li><a href="daily_sales.php" >Daily Sales</a></li>
+          <li><a href="annual_renewal_sales.php" >Annual Renewal Sales</a></li>
+
+
+
+
 <!--             <li><a href="#">Another action</a></li>
             <li><a href="#">Something else here</a></li>
             <li role="separator" class="divider"></li>
@@ -120,6 +125,46 @@ if($_SESSION["accessright"] == '1')
         <button type="submit" class="btn btn-default">Submit</button>
       </form> -->
       <ul class="nav navbar-nav navbar-right">
+
+                <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"  style="color:white;"><i class="fa fa-bell" style="color:black;"></i><span class="badge" style="font-size: 10px;position: relative; top: -10px; ">
+                    <?php
+
+
+
+
+$today = date("Y-m-d");
+
+  $select_stocks = "SELECT * FROM member WHERE expireWarningDate ='$today'";
+  $result=mysqli_query($connect,$select_stocks);
+  $run_rowcount = mysqli_num_rows($result);
+
+  echo $run_rowcount;
+
+            ?>    
+
+          </span></a>
+          <ul class="dropdown-menu">
+<?php
+  $select_stocks = "SELECT * FROM member WHERE expireWarningDate ='$today'";
+  $run_select_stocks = mysqli_query($connect,$select_stocks);
+  while($row = mysqli_fetch_array($run_select_stocks))
+
+        {
+
+?>   
+            <li style="color:black;"><a>Member <?php echo $row['member_lastname'].', '.$row['member_firstname'].' '.$row['member_middlename'].' is about to expire';?></a></li>
+     
+<?php
+
+        }
+
+
+?>
+          </ul>
+        </li>
+
+
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" style="color: black; font-size: 20px;"><b>Welcome, <?php echo $_SESSION["username"]; ?> <span class="caret"></span></b></a>
           <ul class="dropdown-menu">

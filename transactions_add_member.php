@@ -81,7 +81,7 @@ include("navbar.php");
   <br>
               <div class="box-body">
 <br><br>
-            <form method="POST" action="save_data.php">
+            <form method="POST" action="save_data.php"  enctype="multipart/form-data">
           <?php $random_num = mt_rand(00000001, 99999999); ?>
 
 <div class="row">
@@ -91,42 +91,32 @@ include("navbar.php");
           
                        <div class="form-group">
                         <label for="exampleInputLastName">Last Name</label>
-                        <input type="text" class="form-control" id="exampleInputLastName" placeholder="Enter Last Name" name="lastname" required>
+                        <input type="text" class="form-control" id="exampleInputLastName" placeholder="Enter Last Name" name="lastname" >
                       </div>
 
       </div>
       <div class="col-md-3">
                       <div class="form-group">
                         <label for="exampleInputFirstName">First Name</label>
-                        <input type="text" class="form-control" id="exampleInputFirstName" placeholder="Enter First Name" name="firstname" required>
+                        <input type="text" class="form-control" id="exampleInputFirstName" placeholder="Enter First Name" name="firstname" >
                       </div>
       </div>
-      <div class="col-md-3">
+      <div class="col-md-2">
                        <div class="form-group">
                         <label for="middleName">Middle Name</label>
                         <input type="text" class="form-control" id="middleName" placeholder="Enter Middle Name" name="middlename">
                       </div>
 
       </div>
-      <div class="col-md-3">
+      <div class="col-md-2">
                       <div class="form-group">
                         <label for="birthday">Birthday</label>
-                        <input type="date" class="form-control" id="birthday" placeholder="Enter Birthday" name="birthday" max="2013-12-31" required>
+                        <input type="date" class="form-control" id="birthday" placeholder="Enter Birthday" name="birthday" max="2013-12-31" >
                       </div>
 
       </div>
-</div>
 
-<div class="row">
-    <div class="col-md-4">
-                     <div class="form-group">
-                      <label for="address">Address</label>
-                      <input type="text" class="form-control" id="address" placeholder="Enter Address" name="address" required>
-                    </div>
-    </div>
-
-
-    <div class="col-md-2">
+      <div class="col-md-2">
                     <div class="form-group">
                       <label>Gender</label>
                       <select name="gender" class="form-control">
@@ -134,28 +124,49 @@ include("navbar.php");
                         <option value="Female">Female</option>
                       </select>
                     </div>
+
+
+      </div>
+
+
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+                     <div class="form-group">
+                      <label for="address">Address</label>
+                      <input type="text" class="form-control" id="address" placeholder="Enter Address" name="address" >
+                    </div>
     </div>
+
 
     <div class="col-md-2">
                     <div class="form-group">
                       <label for="conact">Contact Number: </label>
-                      <input type="number" maxlength="11" max="99999999999" class="form-control" id="conact" placeholder="Enter Last Name" name="contact" required>
+                      <input type="number" maxlength="11" max="99999999999" class="form-control" id="conact" placeholder="Enter Last Name" name="contact" >
                     </div>
     </div>
 
     <div class="col-md-2">
                     <div class="form-group">
                       <label for="height">Height</label>
-                      <input type="number" class="form-control" id="height" placeholder="Enter Height" name="height" min="1" max="300" required>
+                      <input type="number" class="form-control" id="height" placeholder="Enter Height" name="height" min="1" max="300" >
                     </div>
     </div>
 
     <div class="col-md-2">
-
         <div class="form-group">
                       <label for="weight">Weight</label>
-                      <input type="number" class="form-control" id="weight" placeholder="Enter Weight" name="weight" min="1" max="500" required>
+                      <input type="number" class="form-control" id="weight" placeholder="Enter Weight" name="weight" min="1" max="500" >
                     </div>
+    </div>
+
+    <div class="col-md-2">
+        <div class="form-group">
+          <label for="weight">Target Weight</label>
+          <input type="number" class="form-control" id="weight" placeholder="Enter Weight" name="targetweight" min="1" max="500" >
+        </div>
+
     </div>
 </div>
 
@@ -205,19 +216,24 @@ $table2 = "SELECT * FROM member_promo WHERE isDeleted = '0'";
 
 
 
-<div class="col-md-4">
+<div class="col-md-3">
                   <div class="form-group">
                   <label for="medicalhistory">Medical History</label>
-                  <input type="text" class="form-control" id="medicalhistory" placeholder="Medical History" name="medicalhistory" required>
+                  <input type="text" class="form-control" id="medicalhistory" placeholder="Medical History" name="medicalhistory" >
                 </div>
 </div>
 
-    <div class="col-md-2">
+    <div class="col-md-3">
 
-        <div class="form-group">
-                      <label for="weight">Target Weight</label>
-                      <input type="number" class="form-control" id="weight" placeholder="Enter Weight" name="targetweight" min="1" max="500" required>
-                    </div>
+      <div class="form-group">
+        <label for="membersphoto">Member's Photo:</label>
+        <input type="file" class="form-control" name="member_image" id="membersphoto" accept="image/x-png,image/gif,image/jpeg" placeholder="MEMBER IMAGE" >
+   
+      </div>
+
+
+    
+
     </div>
 </div>
 
@@ -318,8 +334,30 @@ $user_delmodal="user_delmodal".$row['member_id'];
     echo '
 
 <td>
-<button class="btn btn-primary"  data-toggle="modal" data-target="#'.$user_viewmodal.'"><i class="fa fa-eye"></i></button>&nbsp;</td>
+
+
+<button class="btn btn-primary col-md-3" data-toggle="modal" data-target="#'.$user_viewmodal.'"><i class="fa fa-eye"></i></button>&nbsp;&nbsp;
+
+<br>
+<br>
+
+<form action="membership_form.php" method="POST">
+<input type="hidden" name="get_memberid" value="'.$row['member_id'].'">
+
+
+<button type="submit" class="btn btn-success col-md-8">Profile Form</button>&nbsp;
+
+</form>
+
+
+
    ';
+
+
+echo '</td>';
+
+
+
 echo
 "
     

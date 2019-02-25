@@ -16,7 +16,7 @@ $table2 = "SELECT * FROM member_sales_new WHERE month = '$month' AND year = '$ye
             while($row = mysqli_fetch_array($run_query2b))
 
         {
-            $total_sales = $total_sales + $row['amount'];
+            $total_sales = $total_sales + $row['annual_amount'];
             $final_sales = $total_sales;
         }
 
@@ -94,14 +94,27 @@ $table2 = "SELECT * FROM member_sales_new WHERE month = '$month' AND year = '$ye
 
         
         $run_query2b = mysqli_query($connect,$table2);
-
+if (mysqli_num_rows($run_query2b)==0){
+echo '<script language="javascript">';
+echo 'alert("THIS REPORT IS EMPTY!")';
+echo '</script>';
+echo"<script>window.location.href='member_sales.php';</script>";  
+}
             while($row = mysqli_fetch_array($run_query2b))
 
         {
 
 $pdf->Cell(25 ,6,'',0,1);
+
+
+
+
 $pdf->Cell(96 ,6,$row['member_lastname'].', '.$row['member_firstname'].' '.$row['member_middlename'],1,0,'C');
-$pdf->Cell(98 ,6,$row['amount'],1,0,'C');
+
+
+
+
+$pdf->Cell(98 ,6,$row['annual_amount'],1,0,'C');
 
 }
 

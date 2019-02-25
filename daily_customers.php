@@ -151,7 +151,7 @@ echo
                 </div>
                 <div class='modal-body'>
                  
- <form  role='form' action='save_data.php' method='post' >
+ <form  role='form' action='save_data.php' method='post' enctype='multipart/form-data' >
     <input type='hidden' name='cust_daily_id' value='".$row['cust_daily_id']."'>
     ";
  
@@ -190,6 +190,19 @@ echo
     </div>
 
 
+    <div class="col-md-4">
+
+
+
+      <div class="form-group">
+        <label for="membersphoto">Member's Photo:</label>
+        <input type="file" class="form-control" name="member_image" id="membersphoto" accept="image/x-png,image/gif,image/jpeg" placeholder="MEMBER IMAGE" >
+   
+      </div>
+
+
+
+    </div>
 
 
 
@@ -242,7 +255,7 @@ $table2 = "SELECT * FROM member_promo WHERE isDeleted = '0' AND isMember ='1' ";
 
 
   <?php 
-echo "asdasdasd";
+
 
   echo"
 

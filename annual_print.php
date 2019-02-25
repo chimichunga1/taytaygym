@@ -4,29 +4,26 @@ include("connection.php");
 require('fpdf/fpdf.php');
 
 $total_sales = 0;
-$get_userid = $_POST['get_userid'];
+ 
 $get_day = $_POST['get_day'];
 $get_month = $_POST['get_month'];
 $get_year = $_POST['get_year'];
+$get_cust_daily_id = $_POST['get_userid'];
 
 
 
 
 
-$day = date('d');
+$table2 = "SELECT * FROM annual_sales WHERE isDeleted='0' AND day = '$get_day' AND year = '$get_year' AND annual_sales_id = '$get_cust_daily_id'";
 
-$month = date('F');
-$year = date('Y');
-$table2 = "SELECT * FROM member_sales_new WHERE member_sales_new_id = '$get_userid' AND day = '$get_day' AND month = '$get_month' AND year = '$get_year'";
-        
-        
+
         
         $run_query2b = mysqli_query($connect,$table2);
 
             while($row = mysqli_fetch_array($run_query2b))
 
         {
-            $total_sales = $total_sales + $row['amount'];
+            $total_sales = $total_sales + $row['annual_amount'];
             $final_sales = $total_sales;
         }
 
@@ -86,18 +83,27 @@ $pdf->SetFont('Arial','B',12);
 $pdf->Cell(25 ,25,'',0,1);
 
 $pdf->Cell(120 ,5   ,'DATA AS OF : '.date("Y-m-d h:i A"),0,1);//end of line
+/*$pdf->Cell(120 ,5   ,'DATE RANGE : WEEK '.$week.' OF YEAR '.$year);//end of line*/
 
 
+/*$table2 = "SELECT amount,customer_daily.cust_daily_id,customer_daily.cust_firstname,customer_daily.cust_middlename,customer_daily.cust_lastname,customer_daily.cust_contact_no,customer_daily.cust_time_in,customer_sales.time_out FROM customer_daily LEFT JOIN customer_sales ON customer_daily.cust_daily_id=customer_sales.cust_sales_id WHERE customer_daily.isDeleted='0' AND customer_daily.isTimeOut = '1' AND customer_sales.day = '$day' AND customer_sales.month = '$month' AND customer_sales.year = '$year'";
 
 
+        
+        $run_query2b = mysqli_query($connect,$table2);
+
+            while($row = mysqli_fetch_array($run_query2b))
+
+        {*/
 $pdf->SetFont('Arial','B',15);
 $pdf->Cell(25 ,10,'',0,1);
 $pdf->Cell(96 ,10,'Full Name ',1,0,'C');
-$pdf->Cell(98 ,10,'Amount',1,0,'C');
+$pdf->Cell(98 ,10,'Time In  ',1,0,'C');
 $pdf->SetFont('Arial','',12);
 $pdf->Cell(25 ,4,'',0,1);
 
-$table2 = "SELECT * FROM member_sales_new WHERE member_sales_new_id = '$get_userid' AND day = '$get_day' AND month = '$get_month' AND year = '$get_year'";
+$table2 = "SELECT * FROM annual_sales WHERE isDeleted='0' AND day = '$get_day' AND year = '$get_year' AND annual_sales_id = '$get_cust_daily_id'";
+
 
 
         
@@ -106,25 +112,36 @@ if (mysqli_num_rows($run_query2b)==0){
 echo '<script language="javascript">';
 echo 'alert("THIS REPORT IS EMPTY!")';
 echo '</script>';
-echo"<script>window.location.href='member_sales.php';</script>";  
+/*echo"<script>window.location.href='annual_renewal_sales.php';</script>";  */
 }
             while($row = mysqli_fetch_array($run_query2b))
 
         {
 
 $pdf->Cell(25 ,6,'',0,1);
-$pdf->Cell(96 ,6,$row['member_lastname'].', '.$row['member_firstname'].' '.$row['member_middlename'],1,0,'C');
-$pdf->Cell(98 ,6,$row['amount'],1,0,'C');
+
+
+
+
+          $member = $row['member_id'];
+          $table2 = "SELECT * FROM member WHERE member_id = '$member' ";
+          $run_query2b = mysqli_query($connect,$table2);
+            while($row_members = mysqli_fetch_array($run_query2b))
+
+        {
+
+
+$pdf->Cell(96 ,6,$row_members['member_lastname'].', '.$row_members['member_firstname'].' '.$row_members['member_middlename'],1,0,'C');
+
+          }
+
+
+
+$pdf->Cell(98 ,6,$row['date_renewed'],1,0,'C');
 
 }
 
 $pdf->Cell(25 ,3,'',0,1);
-
-
-
-
-
-
 
 
 $pdf->SetFont('Arial','B',15);
