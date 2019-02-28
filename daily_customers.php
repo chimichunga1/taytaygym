@@ -173,7 +173,7 @@ echo
 
         <div class="form-group">
                       <label for="weight">Target Weight</label>
-                      <input type="number" class="form-control" id="weight" placeholder="Enter Weight" name="targetweight" min="1" max="500" required>
+                      <input type="number" class="form-control" id="weight" placeholder="Enter Weight (KG)" name="targetweight" min="1" max="500" required>
                     </div>
     </div>
 

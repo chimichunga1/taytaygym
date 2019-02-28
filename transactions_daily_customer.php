@@ -41,7 +41,13 @@
     <![endif]-->
   </head>
 
-
+<script language="javascript" type="text/javascript">
+function limitText(limitField, limitNum) {
+    if (limitField.value.length > limitNum) {
+        limitField.value = limitField.value.substring(0, limitNum);
+    }
+}
+</script>
   <body>
 <?php
 
@@ -107,7 +113,7 @@ include("navbar.php");
     <div class="col-md-3">
       <div class="form-group">
         <label for="conact">Contact Number: </label>
-        <input type="number" class="form-control"  maxlength="11" max="99999999999" id="conact" placeholder="Enter Last Name" name="contact" required>
+        <input type="number" class="form-control" id="conact" placeholder="Enter Last Name" name="contact"  onKeyDown="limitText(this,11);" onKeyUp="limitText(this,11);" required>
       </div>
     </div>
 
@@ -130,13 +136,13 @@ include("navbar.php");
       <div class="col-md-3">
             <div class="form-group">
               <label for="height">Height</label>
-              <input type="number" class="form-control" id="height" placeholder="Enter Height" name="height" min="1" max="300" required>
+              <input type="number" class="form-control" id="height" placeholder="Enter Height (FT)" name="height" min="1" max="300" required>
             </div>
       </div>
       <div class="col-md-3">
             <div class="form-group">
             <label for="weight">Weight</label>
-            <input type="number" class="form-control" id="weight" placeholder="Enter Weight" name="weight" min="1" max="500" required>
+            <input type="number" class="form-control" id="weight" placeholder="Enter Weight (KG)" name="weight" min="1" max="500" required>
           </div>
       </div>
 

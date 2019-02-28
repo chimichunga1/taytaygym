@@ -207,7 +207,7 @@ $year = $_POST['year'];
                    <th>Full Name</th>               
                   <th>Contact No.</th>
                   <th>Time In</th>
-                  <th>Action</th>
+<!--                   <th>Action</th> -->
                
     
                 </tr>
@@ -252,10 +252,10 @@ $final_amount_daily = $final_total;
 $user_viewmodal="user_viewmodal".$row['cust_daily_id'];
 $user_printmodal="user_printmodal".$row['cust_daily_id'];
 
-    echo '
+/*    echo '
 <td><button class="btn btn-primary"  data-toggle="modal" data-target="#'.$user_printmodal.'"><i class="fa fa-print"></i></button>&nbsp;</td>
 
-   ';
+   ';*/
   
 echo
 "
@@ -381,7 +381,7 @@ $year = $_POST['year'];
                    <th>Full Name</th>               
                   <th>Contact No.</th>
                   <th>Time In</th>
-                  <th>Action</th>
+<!--                   <th>Action</th> -->
                   
     
                 </tr>
@@ -545,7 +545,7 @@ $year = date("Y");
                    <th>Full Name</th>               
                   <th>Contact No.</th>
                   <th>Time In</th>
-                  <th>Action</th>
+<!--                   <th>Action</th> -->
                   
     
                 </tr>
@@ -590,10 +590,10 @@ $final_amount_daily = $final_total;
 $user_viewmodal="user_viewmodal".$row['cust_daily_id'];
 $user_printmodal="user_printmodal".$row['cust_daily_id'];
 
-    echo '
+/*    echo '
 <td><button class="btn btn-primary"  data-toggle="modal" data-target="#'.$user_printmodal.'"><i class="fa fa-print"></i></button>&nbsp;</td>
 
-   ';
+   ';*/
   
 echo
 "
@@ -718,7 +718,7 @@ $year = date("Y");
                    <th>Full Name</th>               
                   <th>Contact No.</th>
                   <th>Time Out</th>
-                  <th>Action</th>
+<!--                   <th>Action</th> -->
     
                 </tr>
                 </thead>
@@ -762,14 +762,14 @@ $user_viewmodal="user_viewmodal".$row['time_in_id'];
 $user_printmodal="user_printmodal".$row['time_in_id'];
 $user_timein="user_timeinmodal".$row['time_in_id'];
 
-
+/*
     echo '
 
 <td>
 <button class="btn btn-success"  data-toggle="modal" data-target="#'.$user_timein.'"><i class="fa fa-plus"></i></button>&nbsp;
 
 </td>
-   ';
+   ';*/
 
 echo
 "

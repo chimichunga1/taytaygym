@@ -113,8 +113,7 @@ $pdf->Cell(96 ,6,$row['member_lastname'].', '.$row['member_firstname'].' '.$row[
 
 
 
-
-$pdf->Cell(98 ,6,$row['annual_amount'],1,0,'C');
+$pdf->Cell(98 ,6,.'P '.$row['annual_amount'].'.00',1,0,'C');
 
 }
 
@@ -135,6 +134,11 @@ $pdf->Cell(54 ,10,'',0,0,'C');
 $pdf->Cell(54 ,10,'',0,0,'C');
 $pdf->Cell(54 ,10,'Total Sales : ',0,0,'C');
 $pdf->Cell(30 ,10,"P".$final_sales.".00",0,0,'C');
+$pdf->Cell(25 ,7,'',0,1);
+$pdf->Cell(54 ,10,'',0,0,'C');
+$pdf->Cell(54 ,10,'',0,0,'C');
+$pdf->Cell(54 ,10,'12% VAT : ',0,0,'C');
+$pdf->Cell(30 ,10,"P".(int)$final_sales*.12.".00",0,0,'C');
 $pdf->Cell(25 ,3,'',0,1);
 $pdf->SetFont('Arial','',12);
 

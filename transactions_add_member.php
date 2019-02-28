@@ -40,7 +40,13 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
-
+<script language="javascript" type="text/javascript">
+function limitText(limitField, limitNum) {
+    if (limitField.value.length > limitNum) {
+        limitField.value = limitField.value.substring(0, limitNum);
+    }
+}
+</script>
 
   <body>
 <?php
@@ -143,28 +149,28 @@ include("navbar.php");
     <div class="col-md-2">
                     <div class="form-group">
                       <label for="conact">Contact Number: </label>
-                      <input type="number" maxlength="11" max="99999999999" class="form-control" id="conact" placeholder="Enter Last Name" name="contact" >
+                      <input type="number" onKeyDown="limitText(this,11);" onKeyUp="limitText(this,11);" class="form-control" id="conact" placeholder="Enter Last Name" name="contact" >
                     </div>
     </div>
 
     <div class="col-md-2">
                     <div class="form-group">
                       <label for="height">Height</label>
-                      <input type="number" class="form-control" id="height" placeholder="Enter Height" name="height" min="1" max="300" >
+                      <input type="number" class="form-control" id="height" placeholder="Enter Height (FT)" name="height" min="1" max="300" >
                     </div>
     </div>
 
     <div class="col-md-2">
         <div class="form-group">
                       <label for="weight">Weight</label>
-                      <input type="number" class="form-control" id="weight" placeholder="Enter Weight" name="weight" min="1" max="500" >
+                      <input type="number" class="form-control" id="weight" placeholder="Enter Weight (KG)" name="weight" min="1" max="500" >
                     </div>
     </div>
 
     <div class="col-md-2">
         <div class="form-group">
           <label for="weight">Target Weight</label>
-          <input type="number" class="form-control" id="weight" placeholder="Enter Weight" name="targetweight" min="1" max="500" >
+          <input type="number" class="form-control" id="weight" placeholder="Enter Weight (KG)" name="targetweight" min="1" max="500" >
         </div>
 
     </div>
@@ -336,16 +342,14 @@ $user_delmodal="user_delmodal".$row['member_id'];
 <td>
 
 
-<button class="btn btn-primary col-md-3" data-toggle="modal" data-target="#'.$user_viewmodal.'"><i class="fa fa-eye"></i></button>&nbsp;&nbsp;
+<button class="btn btn-primary col-md-12" data-toggle="modal" data-target="#'.$user_viewmodal.'"><i class="fa fa-eye"></i></button>&nbsp;
 
-<br>
-<br>
 
 <form action="membership_form.php" method="POST">
 <input type="hidden" name="get_memberid" value="'.$row['member_id'].'">
 
 
-<button type="submit" class="btn btn-success col-md-8">Profile Form</button>&nbsp;
+<button type="submit" class="btn btn-success col-md-12">Profile Form</button>&nbsp;
 
 </form>
 
@@ -413,14 +417,14 @@ else{
 
 <b>Address : <?php echo $row['member_address']; ?></b> <p></p>
 <b>Gender : <?php echo $row['member_gender']; ?></b> <p></p>
-<b>Height : <?php echo $row['member_height']; ?></b> <p></p>
-<b>Weight : <?php echo $row['member_weight']; ?></b> <p></p>
+<b>Height : <?php echo $row['member_height']; ?> Ft.</b> <p></p>
+<b>Weight : <?php echo $row['member_weight']; ?> Kg.</b> <p></p>
 
 </div>
 <div class="col-md-6">
-<b>Age : <?php echo $row['member_age']; ?></b> <p></p>
-<b>Birthday : <?php echo $row['member_birthdate']; ?></b   <p></p>
-<b>Target Weight : <?php echo $row['member_targetweight']; ?></b> <p></p>
+<b>Age : <?php echo $row['member_age']; ?> Years old</b> <p></p>
+<b>Birthday : <?php echo $row['member_birthdate']; ?></b><p></p>
+<b>Target Weight : <?php echo $row['member_targetweight']; ?> Kg.</b> <p></p>
 <b>Medical History : <?php echo $row['member_medicalhistory']; ?></b> <p></p>
 
 

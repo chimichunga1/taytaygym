@@ -91,8 +91,7 @@ $username_check = $_SESSION["username"];
 
 
 $table2 = "SELECT member.isAnnualExpired,member.member_id,member.member_code,member.member_firstname,member.member_middlename,member.member_lastname,member.member_birthdate,member.member_address,member.member_gender,member.member_contact,member.member_height,member.member_weight,member.member_targetweight,member.member_medicalhistory,member.member_sub_id,member.member_age,member.membership_registered,member.membership_expired,member_expired.date_expired,member.annual_expire
-FROM member
-RIGHT JOIN member_expired ON member.member_id=member_expired.member_id WHERE member.isDeleted = '0' and member.isExpired= '1' AND member.isCancelled = '0'";
+FROM member RIGHT JOIN member_expired ON member.member_id=member_expired.member_id WHERE member.isDeleted = '0' and member.isExpired= '1' AND member.isCancelled = '0'";
         
         
         
